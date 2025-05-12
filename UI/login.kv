@@ -1,0 +1,75 @@
+<LoginScreen>:
+    MDFloatLayout:
+        md_bg_color: 0.501, 0, 0.125, 1  # Burgundy color
+
+        MDLabel:
+            text: "ResQ Login"
+            halign: "center"
+            font_style: "H3"
+            pos_hint: {"center_x": 0.5, "center_y": 0.85}
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: None, None
+            size: dp(130), dp(40)
+            pos_hint: {"right": 0.98, "top": 0.98}
+
+        MDLabel:
+            id: status_label
+            text: ""
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 1, 0, 0, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.78}
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDTextField:
+            id: username_input
+            hint_text: "Username"
+            mode: "rectangle"
+            pos_hint: {"center_x": 0.5, "center_y": 0.65}
+            size_hint_x: 0.8
+
+        MDTextField:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            mode: "rectangle"
+            pos_hint: {"center_x": 0.5, "center_y": 0.52}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Login"
+            pos_hint: {"center_x": 0.5, "center_y": 0.40}
+            on_release: root.login()
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: None, None
+            size: dp(200), dp(40)
+            spacing: dp(10)
+            pos_hint: {"x": 0.1, "center_y": 0.30}
+
+            MDCheckbox:
+                id: remember_checkbox
+                size_hint: None, None
+                size: dp(24), dp(24)
+
+            MDLabel:
+                text: "Remember Me"
+                theme_text_color: "Secondary"
+                halign: "left"
+                valign: "middle"
+                size_hint_y: None
+                height: dp(24)
+
+        MDTextButton:
+            text: "Forgot Password?"
+            pos_hint: {"center_x": 0.5, "center_y": 0.22}
+            on_release: app.root.current = "forgot_pw"
+
+        MDTextButton:
+            text:"No account yet? Register here"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.root.current = "register"

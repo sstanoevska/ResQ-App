@@ -1,0 +1,59 @@
+<ResetPasswordScreen>:
+    name: "reset_pw"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.0, 0.2, 0.4, 1
+
+        # Top section with Back arrow and Title
+        MDTopAppBar:
+            title: "Reset Password"
+            elevation: 4
+            left_action_items: [["arrow-left", root.go_back]]
+            md_bg_color: 0.27, 0.51, 0.71, 1
+            title_color: 1, 1, 1, 1
+
+        # Scrollable container for input fields
+        ScrollView:
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: "20dp"
+                spacing: "20dp"
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Phone Number input field
+                MDTextField:
+                    id: phone_input
+                    hint_text: "Phone Number"
+                    mode: "rectangle"
+                    readonly: True
+                    size_hint_y: None
+                    height: "50dp"
+
+                # Code input field
+                MDTextField:
+                    id: code_input
+                    hint_text: "Enter Code"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "50dp"
+
+                # New Password input field
+                MDTextField:
+                    id: new_password_input
+                    hint_text: "New Password"
+                    password: True
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "50dp"
+
+                # Reset Password Button
+                MDFlatButton:
+                    text: "Reset Password"
+                    md_bg_color: 0.27, 0.51, 0.71, 1
+                    pos_hint: {"center_x": 0.5}
+                    size_hint: None, None
+                    size: dp(200), dp(50)
+                    elevation: 0
+                    on_release: root.reset_password()

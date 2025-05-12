@@ -1,0 +1,123 @@
+<DoctorDashboardScreen>:
+    name: "doctor_dashboard"
+
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+
+        # Logo and Greeting
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: "10dp"
+            padding: "20dp"
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {"center_x": 0.5, "top": 1}
+
+            Image:
+                source: "C:/Users/SARA/Desktop/Diplomska/logo1.png"
+                size_hint: None, None
+                size: "120dp", "120dp"
+                allow_stretch: True
+                keep_ratio: True
+                pos_hint: {"center_x": 0.5}
+
+        MDLabel:
+            id: greeting_label
+            text: "\"Welcome back, Doctor!\""
+            font_name: "C:/Users/SARA/Desktop/Diplomska/Quintessential-Regular.ttf"
+            font_size: "20sp"
+            halign: "left"
+            valign: "top"
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            pos_hint: {"x": 0.02, "top": 0.95}
+            size_hint: None, None
+            size: self.texture_size
+            text_size: None, None
+
+        MDRaisedButton:
+            text: "Log out"
+            pos_hint: {"right": 0.98, "top": 0.98}
+            elevation: 0
+            on_release: root.logout()
+
+        # Main Content
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 0.75
+            pos_hint: {"top": 0.80}
+            padding: "10dp"
+
+            # LEFT - Doctor Info (Shorter + aligned up)
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_x: 0.28
+                size_hint_y: None
+                height: "350dp"
+                pos_hint: {"top": 1}
+                padding: "10dp"
+                spacing: "10dp"
+                md_bg_color: 0.9, 0.3, 0.3, 1
+                radius: [20, 20, 20, 20]
+
+                ScrollView:
+                    MDList:
+                        id: doctor_info_box
+
+                MDFlatButton:
+                    text: "Edit Profile"
+                    pos_hint: {"center_x": 0.5}
+                    size_hint: None, None
+                    size: "140dp", "40dp"
+                    md_bg_color: 0.7, 0.2, 0.2, 1
+                    elevation: 0
+                    on_release: root.open_edit_profile_screen()
+
+            # RIGHT - Patient List
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_x: 0.5
+                padding: "20dp"
+                spacing: "10dp"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint_y: None
+                    height: "60dp"
+                    spacing: "10dp"
+
+                    MDLabel:
+                        text: "My Patients"
+                        font_style: "H6"
+                        halign: "right"
+                        theme_text_color: "Custom"
+                        text_color: 0, 0, 0, 1
+                        size_hint_x: 0.9
+
+                    MDIconButton:
+                        icon: "plus"
+                        theme_text_color: "Custom"
+                        text_color: 0, 0, 0, 1
+                        on_release: root.open_assign_patient_dialog()
+
+                ScrollView:
+                    MDBoxLayout:
+                        id: patients_list
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: "10dp"
+
+        # Appreciation Quote at Bottom Center
+        MDFloatLayout:
+            size_hint_y: None
+            height: "50dp"
+
+            MDLabel:
+                text: "\"Bravery is your daily routine. Gratitude is ours. Thank you, Doctor!\""
+                font_name: "C:/Users/SARA/Desktop/Diplomska/Quintessential-Regular.ttf"
+                font_size: "16sp"
+                halign: "center"
+                theme_text_color: "Custom"
+                text_color: 0.2, 0.2, 0.2, 1
+                pos_hint: {"center_x": 0.46, "y": 0}  # Slightly to the left
