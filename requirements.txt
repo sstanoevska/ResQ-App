@@ -32,10 +32,9 @@ pymysql==1.0.2
 Flask==2.2.3
 Werkzeug==2.2.3
 bcrypt==4.0.1
-cryptography==38.0.4
+cryptography==3.4.8
 requests==2.32.3
-twilio==7.14.1
-pycryptodome==3.15.0
+twilio==7.18.1
 python-dotenv==0.21.0
-re==2.2.1
 os==0.0.1
+
