@@ -37,6 +37,5 @@ requests==2.32.3
 twilio==7.14.1
 pycryptodome==3.15.0
 python-dotenv==0.21.0
-random==4.2.3
 re==2.2.1
 os==0.0.1
