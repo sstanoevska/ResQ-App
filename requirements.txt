@@ -27,5 +27,7 @@ sh==1.14.3
 toml==0.10.2
 urllib3==2.4.0
 virtualenv==20.31.2
-gunicorn
+gunicorn==20.1.0
 pymysql==1.0.2
+Flask==2.2.3
+
