@@ -36,5 +36,5 @@ cryptography==3.4.8
 requests==2.32.3
 twilio==9.6.0
 python-dotenv==0.21.0
-
+kivymd
 
