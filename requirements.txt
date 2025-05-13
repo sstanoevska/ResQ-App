@@ -27,3 +27,4 @@ sh==1.14.3
 toml==0.10.2
 urllib3==2.4.0
 virtualenv==20.31.2
+gunicorn
