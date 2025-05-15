@@ -131,7 +131,7 @@ def reset_pw_sms():
 @app.route('/add-emergency-contact', methods=['POST'])
 def add_emergency_contact():
     data = request.json
-
+    print("[DEBUG] Incoming data:", data)
 
     user_egn = data.get("user_egn")
     name = data.get("name")
@@ -141,6 +141,8 @@ def add_emergency_contact():
 
     if not all([user_egn, name, phone, contact_type]):
         return jsonify({"message": "Invalid data"}), 400
+
+    print("[DEBUG] Raw user EGN from app:", user_egn)
 
     try:
         result = add_contact(user_egn, name, phone, email, contact_type)

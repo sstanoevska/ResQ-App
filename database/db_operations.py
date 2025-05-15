@@ -139,19 +139,21 @@ def login_user(username, password, remember_me=False):
 
 
 def add_contact(user_egn, name, phone, email, contact_type):
-    hashed = store_egn_mapping(user_egn)
     phone = normalize_phone(phone)
+    hashed_egn = user_egn  
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    ver_code=str(random.randint(100000,999999))
-    cursor.execute("""INSERT INTO emergency_contacts(user_egn, name, phone, email, contact_type,verification_code)
-                      VALUES (%s,%s,%s,%s,%s, %s)""", (hashed, name, phone, email, contact_type,ver_code))
+    ver_code = str(random.randint(100000, 999999))
+    cursor.execute("""INSERT INTO emergency_contacts(user_egn, name, phone, email, contact_type, verification_code)
+                      VALUES (%s, %s, %s, %s, %s, %s)""",
+                   (hashed_egn, name, phone, email, contact_type.lower(), ver_code))
+
     conn.commit()
     conn.close()
-    message=f"Your verification code is {ver_code}"
-    send_sms(phone,message)
 
+    send_sms(phone, f"Your verification code is {ver_code}")
     return "Contact added."
 
 
@@ -162,7 +164,7 @@ def assign_patient(doctor_egn, patient_egn):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # ✅ Check that patient exists
+  
     cursor.execute("SELECT 1 FROM app_users WHERE EGN = %s AND role = 'patient'", (hashed_patient,))
     if not cursor.fetchone():
         conn.close()
