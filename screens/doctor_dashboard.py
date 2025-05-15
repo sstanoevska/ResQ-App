@@ -19,7 +19,7 @@ class DoctorDashboardScreen(MDScreen):
         username = App.get_running_app().logged_in_username
 
         try:
-            response = requests.get("http://127.0.0.1:5000/doctor-dashboard", params={
+            response = requests.get("https://resq-backend-iau8.onrender.com/doctor-dashboard", params={
                 "doctor_egn": username,
             })
 
@@ -120,7 +120,7 @@ class DoctorDashboardScreen(MDScreen):
             return
 
         try:
-            response = requests.post("http://127.0.0.1:5000/assign-patient", json={
+            response = requests.post("https://resq-backend-iau8.onrender.com/assign-patient", json={
                 "doctor_egn": doctor_egn,
                 "patient_egn": patient_egn,
             })
@@ -140,7 +140,7 @@ class DoctorDashboardScreen(MDScreen):
             if hasattr(self, "delete_dialog"):
                 self.delete_dialog.dismiss()
 
-            res = requests.post("http://127.0.0.1:5000/delete-patient", json={
+            res = requests.post("https://resq-backend-iau8.onrender.com/delete-patient", json={
                 "doctor_egn": doctor_egn,
                 "patient_egn": patient_egn,
             })

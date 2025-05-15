@@ -20,7 +20,7 @@ class PatientDashboardScreen(MDScreen):
         username = App.get_running_app().logged_in_username
 
         try:
-            response = requests.get("http://127.0.0.1:5000/patient-dashboard", params={
+            response = requests.get("https://resq-backend-iau8.onrender.com/patient-dashboard", params={
                 "username": username,
             })
 
@@ -52,7 +52,7 @@ class PatientDashboardScreen(MDScreen):
         from kivymd.toast import toast
         try:
             username = App.get_running_app().logged_in_username
-            response = requests.get(f"http://127.0.0.1:5000/patient-dashboard?username={username}")
+            response = requests.get(f"https://resq-backend-iau8.onrender.com/patient-dashboard?username={username}")
             if response.status_code == 200:
                 data = response.json()
                 contacts = data.get("emergency_contacts", [])
@@ -153,7 +153,7 @@ class PatientDashboardScreen(MDScreen):
             return
 
         try:
-            response = requests.put("http://127.0.0.1:5000/edit-emergency-contact", json={
+            response = requests.put("https://resq-backend-iau8.onrender.com/edit-emergency-contact", json={
                 "contact_id": contact_id,
                 **updates
             })
@@ -222,7 +222,7 @@ class PatientDashboardScreen(MDScreen):
         self.dialog.dismiss()  # Close the dialog after confirmation
 
         try:
-            response = requests.delete("http://127.0.0.1:5000/delete-contact", json={
+            response = requests.delete("https://resq-backend-iau8.onrender.com/delete-contact", json={
                 "EGN": App.get_running_app().logged_in_egn,  # Already hashed! NO hashing again
                 "id": contact["id"],
             })
@@ -248,7 +248,7 @@ class PatientDashboardScreen(MDScreen):
         }
 
         try:
-            response = requests.post("http://127.0.0.1:5000/send-alert", json=data)
+            response = requests.post("https://resq-backend-iau8.onrender.com/send-alert", json=data)
             msg = response.json().get("message", "Alert sent.")
 
             # Optional: handle if messages list is returned for 'others'
@@ -262,7 +262,7 @@ class PatientDashboardScreen(MDScreen):
     def verify_contact(self, contact_id, code):
         import requests
         try:
-            response = requests.post("http://127.0.0.1:5000/verify-contact", json={
+            response = requests.post("https://resq-backend-iau8.onrender.com/verify-contact", json={
                 "contact_id": contact_id,
                 "code": code.strip()
             })

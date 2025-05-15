@@ -27,7 +27,7 @@ class EditPatientInfoScreen(MDScreen):
         }
 
         try:
-            res = requests.post("http://127.0.0.1:5000/edit-patient", json=data)
+            res = requests.post("https://resq-backend-iau8.onrender.com/edit-patient", json=data)
             if res.status_code == 200:
                 toast("✅ Patient info updated.")
                 self.manager.current = "doctor_dashboard"

@@ -66,7 +66,7 @@ class ResQApp(MDApp):
             with open("remember_me.txt", "r") as file:
                 token = file.read().strip()
                 try:
-                    response = requests.post("http://127.0.0.1:5000/auto-login", json={"token": token})
+                    response = requests.post("https://resq-backend-iau8.onrender.com/auto-login", json={"token": token})
                     if response.status_code == 200:
                         data = response.json()
                         self.logged_in_username = data.get("username")

@@ -49,7 +49,7 @@ class EditProfileScreen(MDScreen):
             return
 
         try:
-            response = requests.put("http://127.0.0.1:5000/edit-profile", json={
+            response = requests.put("https://resq-backend-iau8.onrender.com/edit-profile", json={
                 "EGN": egn,
                 **updates
             })

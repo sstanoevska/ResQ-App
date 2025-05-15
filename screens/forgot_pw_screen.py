@@ -23,7 +23,7 @@ class ForgotPasswordScreen(MDScreen):
         phone = normalize_phone(phone)
 
         try:
-            response = requests.post("http://127.0.0.1:5000/send-sms-reset", json={
+            response = requests.post("https://resq-backend-iau8.onrender.com/send-sms-reset", json={
                 "phone": phone,
             })
             data = response.json()

@@ -14,7 +14,7 @@ class ResetPasswordScreen(MDScreen):
             return
 
         try:
-            response = requests.post("http://127.0.0.1:5000/reset-password-sms", json={
+            response = requests.post("https://resq-backend-iau8.onrender.com/reset-password-sms", json={
                 "phone": phone,
                 "code": code,
                 "new_password": new_password

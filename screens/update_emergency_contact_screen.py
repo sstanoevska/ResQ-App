@@ -33,7 +33,7 @@ class EditEmergencyContactScreen(MDScreen):
             return
 
         try:
-            response = requests.put("http://127.0.0.1:5000/edit-emergency-contact", json={
+            response = requests.put("https://resq-backend-iau8.onrender.com/edit-emergency-contact", json={
                 "contact_id": contact_id,
                 **updates
             })
@@ -55,7 +55,7 @@ class EditEmergencyContactScreen(MDScreen):
 
         try:
             username = App.get_running_app().logged_in_username
-            response = requests.get(f"http://127.0.0.1:5000/patient-dashboard?username={username}")
+            response = requests.get(f"https://resq-backend-iau8.onrender.com/patient-dashboard?username={username}")
             if response.status_code == 200:
                 data = response.json()
                 contacts = data.get("emergency_contacts", [])
