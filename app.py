@@ -127,7 +127,7 @@ def reset_pw_sms():
     return jsonify(result)
 
 
-
+#Temporary change to trigger git
 @app.route('/add-emergency-contact', methods=['POST'])
 def add_emergency_contact():
     data = request.json
