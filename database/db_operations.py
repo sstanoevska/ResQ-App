@@ -140,20 +140,19 @@ def login_user(username, password, remember_me=False):
 
 def add_contact(user_egn, name, phone, email, contact_type):
     phone = normalize_phone(phone)
-    hashed_egn = user_egn  
+    hashed_egn = user_egn 
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    ver_code = str(random.randint(100000, 999999))
-    cursor.execute("""INSERT INTO emergency_contacts(user_egn, name, phone, email, contact_type, verification_code)
-                      VALUES (%s, %s, %s, %s, %s, %s)""",
-                   (hashed_egn, name, phone, email, contact_type.lower(), ver_code))
+    cursor.execute("""
+        INSERT INTO emergency_contacts(user_egn, name, phone, email, contact_type)
+        VALUES (%s, %s, %s, %s, %s)
+    """, (hashed_egn, name, phone, email, contact_type.lower()))
 
     conn.commit()
     conn.close()
 
-    send_sms(phone, f"Your verification code is {ver_code}")
     return "Contact added."
 
 
