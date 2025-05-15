@@ -131,7 +131,7 @@ def reset_pw_sms():
 @app.route('/add-emergency-contact', methods=['POST'])
 def add_emergency_contact():
     data = request.json
-    print("[DEBUG] Incoming data:", data)
+
 
     user_egn = data.get("user_egn")
     name = data.get("name")
@@ -143,29 +143,13 @@ def add_emergency_contact():
         return jsonify({"message": "Invalid data"}), 400
 
     try:
-        phone = normalize_phone(phone)
-
-        connection = pymysql.connect(host='localhost', user='root', password='SaraFilip1411', db='emergency_app')
-        cursor = connection.cursor()
-
-        cursor.execute("SELECT * FROM app_users WHERE EGN = %s", (user_egn,))
-        user = cursor.fetchone()
-
-        if not user:
-            return jsonify({"message": "User not found"}), 400  # If the user EGN doesn't exist in app_users
-
-        # If the user exists, proceed to add the contact
-        cursor.execute("""
-            INSERT INTO emergency_contacts(user_egn, name, phone, email, contact_type)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (user_egn, name, phone, email, contact_type))
-        connection.commit()
-        connection.close()
-
-        return jsonify({"message": "Contact added successfully!"}), 200
+        result = add_contact(user_egn, name, phone, email, contact_type)
+        return jsonify({"message": result}), 200
 
     except Exception as e:
-        print(f"Error in add-emergency-contact: {e}")
+        import traceback
+        print("Error in add-emergency-contact:")
+        traceback.print_exc()
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 @app.route("/assign-patient", methods=["POST"])
