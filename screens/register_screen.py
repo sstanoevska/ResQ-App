@@ -61,6 +61,20 @@ class RegisterScreen(MDScreen):
             box.opacity = 1 if show else 0
             box.disabled = not show
 
+    def clear_fields(self):
+        self.ids.egn_input.text = ""
+        self.ids.name_input.text = ""
+        self.ids.username_input.text = ""
+        self.ids.password_input.text = ""
+        self.ids.confirm_password.text = ""
+        self.ids.phone_input.text = ""
+        self.ids.dob_input.text = ""
+        self.ids.address_input.text = ""
+        self.ids.allergies_input.text = ""
+        self.ids.diagnosis_input.text = ""
+        self.ids.medications_input.text = ""
+        self.ids.role_input.text = "patient"
+        self.set_role_visibility("patient")
 
     def register(self):
         role = self.ids.role_input.text.strip()
@@ -90,12 +104,12 @@ class RegisterScreen(MDScreen):
                 "name": name,
                 "username": username,
                 "password": password,
-                "date_of_birth": self.ids.dob_input.text.strip(),
+                "date_of_birth": self.ids.dob_input.text.strip() or None,
                 "phone": phone,
-                "address": self.ids.address_input.text.strip(),
-                "allergies": self.ids.allergies_input.text.strip(),
-                "diagnosis": self.ids.diagnosis_input.text.strip(),
-                "medications": self.ids.medications_input.text.strip(),
+                "address": self.ids.address_input.text.strip() or None,
+                "allergies": self.ids.allergies_input.text.strip() or None,
+                "diagnosis": self.ids.diagnosis_input.text.strip() or None,
+                "medications": self.ids.medications_input.text.strip() or None,
                 "role": "patient",
             }
         elif role == "doctor":
@@ -112,10 +126,12 @@ class RegisterScreen(MDScreen):
             return
 
         try:
-            response = requests.post("http://127.0.0.1:5000/register", json=data)
+            response = requests.post("https://resq-backend-iau8.onrender.com/register", json=data)
             res = response.json()
             toast(res.get("message", "Registration done."))
+            self.clear_fields()
         except requests.exceptions.JSONDecodeError:
             toast("Server returned invalid response.")
         except Exception as e:
             toast(f"Error: {e}")
+
