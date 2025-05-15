@@ -14,6 +14,19 @@
             size: dp(130), dp(40)
             pos_hint: {"right": 0.98, "top": 0.98}
 
+        # 👇 Help icon added here
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(40)
+            padding: dp(10)
+            MDLabel:
+                text: ""
+                size_hint_x: 0.9
+            MDIconButton:
+                icon: "comment-question-outline"
+                on_release: root.show_help_dialog()
+
         MDLabel:
             id: status_label
             text: ""
@@ -73,3 +86,5 @@
             text:"No account yet? Register here"
             pos_hint: {"center_x": 0.5}
             on_release: app.root.current = "register"
+
+
