@@ -19,10 +19,11 @@ class AddContactScreen(MDScreen):
             return
 
         user_egn = App.get_running_app().logged_in_egn
+        print("[DEBUG] Raw user EGN from app:", user_egn)
 
 
         try:
-            response = requests.post("http://127.0.0.1:5000/add-emergency-contact", json={
+            response = requests.post("https://resq-backend-iau8.onrender.com/add-emergency-contact", json={
                 "user_egn": user_egn,
                 "name": name,
                 "phone": phone,
@@ -32,7 +33,7 @@ class AddContactScreen(MDScreen):
 
             if response.status_code == 200:
                 toast(response.json().get("message", "Contact added!"))
-                self.manager.current = "patient_dashboard"  # Back to dashboard
+                self.manager.current = "patient_dashboard"
             else:
                 toast(response.json().get("message", "Failed to add contact"))
         except Exception as e:
@@ -41,3 +42,4 @@ class AddContactScreen(MDScreen):
 
     def go_back(self, *args):
         self.manager.current = "patient_dashboard"
+
