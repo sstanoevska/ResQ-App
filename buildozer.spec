@@ -14,6 +14,7 @@ source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas,ttf,txt,env
+source.exclude_patterns = app.py
 
 # (str) Application versioning (method 1)
 version = 0.1
