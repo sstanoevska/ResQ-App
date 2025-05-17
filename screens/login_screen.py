@@ -10,6 +10,8 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.metrics import dp
 
+from main import remember_file_path  
+
 
 class HelpContent(BoxLayout):
     pass
@@ -77,7 +79,7 @@ class LoginScreen(MDScreen):
 
     def save_token(self, token):
         try:
-            with open("remember_me.txt", "w") as file:
+            with open(remember_file_path, "w") as file: 
                 file.write(token)
             print("Token saved for auto-login")
         except Exception as e:
@@ -116,5 +118,3 @@ class LoginScreen(MDScreen):
                 md_bg_color=(0.8, 0.4, 0.5, 1)
             )
         self.help_dialog.open()
-
-

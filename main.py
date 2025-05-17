@@ -15,6 +15,15 @@ from screens.edit_profile_screen import EditProfileScreen
 from screens.reset_pw_screen import ResetPasswordScreen
 from screens.update_emergency_contact_screen import EditEmergencyContactScreen
 
+from kivy.utils import platform
+from os.path import join
+if platform == "android":
+    from android.storage import app_storage_path
+    base_path = app_storage_path()
+else:
+    base_path = os.getcwd()
+remember_file_path = join(base_path, "remember_me.txt")
+
 
 class ResQApp(MDApp):
     def build(self):
@@ -32,13 +41,13 @@ class ResQApp(MDApp):
         Builder.load_file(os.path.join("ui", "patient_dashboard.kv"))
         Builder.load_file(os.path.join("ui", "add_contact.kv"))
         Builder.load_file(os.path.join("ui", "edit_profile.kv"))
-        Builder.load_file(os.path.join("ui","reset_pw.kv"))
-        Builder.load_file(os.path.join("ui","update_contacts.kv"))
-        Builder.load_file(os.path.join("ui","doctor_dashboard.kv"))
-        Builder.load_file(os.path.join("ui","edit_patient.kv"))
+        Builder.load_file(os.path.join("ui", "reset_pw.kv"))
+        Builder.load_file(os.path.join("ui", "update_contacts.kv"))
+        Builder.load_file(os.path.join("ui", "doctor_dashboard.kv"))
+        Builder.load_file(os.path.join("ui", "edit_patient.kv"))
 
         self.sm = MDScreenManager()
-        self.sm.add_widget(LoginScreen(name="login"))  # ✅ IMPORTANT
+        self.sm.add_widget(LoginScreen(name="login")) 
         self.sm.add_widget(RegisterScreen(name="register"))
         self.sm.add_widget(ForgotPasswordScreen(name="forgot_pw"))
         self.sm.add_widget(PatientDashboardScreen(name="patient_dashboard"))
@@ -52,7 +61,7 @@ class ResQApp(MDApp):
         return self.sm
 
     def on_start(self):
-        # ✅ SET SCREEN SAFELY HERE
+   
         role = self.try_auto_login()
         if role == "patient":
             self.sm.current = "patient_dashboard"
@@ -62,11 +71,16 @@ class ResQApp(MDApp):
             self.sm.current = "login"
 
     def try_auto_login(self):
-        if os.path.exists("remember_me.txt"):
-            with open("remember_me.txt", "r") as file:
+        if os.path.exists(remember_file_path):
+            with open(remember_file_path, "r") as file:
                 token = file.read().strip()
                 try:
-                    response = requests.post("https://resq-backend-iau8.onrender.com/auto-login", json={"token": token})
+                    import certifi
+                    response = requests.post(
+                        "https://resq-backend-iau8.onrender.com/auto-login",
+                        json={"token": token},
+                        verify=certifi.where()
+                    )
                     if response.status_code == 200:
                         data = response.json()
                         self.logged_in_username = data.get("username")
@@ -88,6 +102,7 @@ class ResQApp(MDApp):
 
     def change_screen(self, screen_name):
         self.sm.current = screen_name
+
 
 if __name__ == '__main__':
     ResQApp().run()
