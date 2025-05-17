@@ -16,7 +16,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,ttf,txt,env
 
 # Use only one of include_patterns/exclude_patterns correctly
-source.include_patterns = **/*.kv, **/*.py, assets/logo1.png, *.png, *.ttf, *.env, icon.png
+source.include_patterns = **/*.kv, **/*.py, assets/*.png, assets/*.ttf, *.env, icon.png
 
 # (str) Application versioning (method 1)
 version = 0.1
