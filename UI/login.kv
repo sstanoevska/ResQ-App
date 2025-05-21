@@ -1,5 +1,6 @@
 <LoginScreen>:
     MDFloatLayout:
+        theme_bg_color: "Custom"
         md_bg_color: 0.501, 0, 0.125, 1  # Burgundy color
 
         MDLabel:
@@ -10,18 +11,15 @@
 
         MDBoxLayout:
             orientation: "horizontal"
-            size_hint: None, None
-            size: dp(130), dp(40)
-            pos_hint: {"right": 0.98, "top": 0.98}
-
-        MDBoxLayout:
-            orientation: "horizontal"
             size_hint_y: None
             height: dp(40)
             padding: dp(10)
+            pos_hint: {"right": 0.98, "top": 0.98}
+
             MDLabel:
                 text: ""
                 size_hint_x: 0.9
+
             MDIconButton:
                 icon: "comment-question-outline"
                 on_release: root.show_help_dialog()
@@ -52,10 +50,18 @@
             size_hint_x: 0.8
 
         MDButton:
-            text: "Login"
             style: "elevated"
+            theme_bg_color: "Custom"
+            md_bg_color: 0.2, 0.2, 0.2, 1
             pos_hint: {"center_x": 0.5, "center_y": 0.40}
+            size_hint: None, None
+            size: "160dp", "42dp"
             on_release: root.login()
+
+            MDButtonText:
+                text: "Login"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
 
         BoxLayout:
             orientation: "horizontal"
@@ -78,13 +84,21 @@
                 height: dp(24)
 
         MDButton:
-            text: "Forgot Password?"
-            variant: "text"
+            style: "text"
             pos_hint: {"center_x": 0.5, "center_y": 0.22}
             on_release: app.root.current = "forgot_pw"
 
+            MDButtonText:
+                text: "Forgot Password?"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
         MDButton:
-            text: "No account yet? Register here"
-            variant: "text"
-            pos_hint: {"center_x": 0.5}
+            style: "text"
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
             on_release: app.root.current = "register"
+
+            MDButtonText:
+                text: "No account yet? Register here"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1

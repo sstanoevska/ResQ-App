@@ -86,8 +86,6 @@ class PatientDashboardScreen(MDScreen):
                 except Exception as e:
                     print(f"❌ Error in {label}: {e}")
 
-        print("✅ Finished show_patient_info()")
-
     def show_contacts(self):
         self.ids.contacts_list.clear_widgets()
         print("➡️ Starting show_contacts()")
@@ -191,19 +189,46 @@ class PatientDashboardScreen(MDScreen):
         pass  # Your original method here
 
     def send_alert(self, alert_type):
+        from kivy.clock import Clock
+        import requests
+        from kivy.app import App
+
         app = App.get_running_app()
         egn = app.logged_in_egn
+
         try:
             response = requests.post("https://resq-backend-iau8.onrender.com/send-alert", json={
                 "patient_egn": egn,
                 "alert_type": alert_type,
             })
+
             msg = response.json().get("message", "Alert sent.")
             if "messages" in response.json():
                 msg = "Alert sent to all verified contacts."
-            MDSnackbar(MDLabel(text=msg, theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
+
+            self.ids.custom_alert_label.text = msg
+            self.ids.custom_alert_box.opacity = 1
+            Clock.schedule_once(self.hide_custom_alert, 3)
+
         except Exception as e:
-            MDSnackbar(MDLabel(text=f"Error: {str(e)}", theme_text_color="Custom", text_color=(1, 0, 0, 1))).open()
+            self.ids.custom_alert_label.text = f"Error: {str(e)}"
+            self.ids.custom_alert_box.opacity = 1
+            Clock.schedule_once(self.hide_custom_alert, 4)
+
+    def hide_custom_alert(self, dt):
+        self.ids.custom_alert_box.opacity = 0
+        self.ids.custom_alert_label.text = ""
+
+    def clear_alert_message(self, dt):
+        self.ids.alert_box.opacity = 0
+        self.ids.alert_message_label.text = ""
+
+    def clear_alert_message(self, dt):
+        self.ids.alert_message_label.text = ""
+        self.ids.alert_box.opacity = 0
+
+    def clear_alert_message(self, dt):
+        self.ids.alert_message_label.text = ""
 
     def verify_contact(self, contact_id, code):
         try:
@@ -228,4 +253,5 @@ class PatientDashboardScreen(MDScreen):
         self.manager.current = "patient_profile"
 
     def logout(self):
-        self.manager.current = "login"
+        print("✅ Logout called")
+        self.manager.current="login"

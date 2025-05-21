@@ -1,3 +1,4 @@
+from kivymd.icon_definitions import md_icons
 from kivy.lang import Builder
 import os
 import requests
@@ -20,7 +21,7 @@ from kivy.utils import platform
 from os.path import join
 from config import remember_file_path
 
-# 🔹 Platform-specific asset paths
+
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
 FONT_PATH = os.path.join(ASSETS_DIR, "Quintessential-Regular.ttf")
 LOGO_PATH = os.path.join(ASSETS_DIR, "logo1.png")
@@ -28,25 +29,28 @@ LOGO_PATH = os.path.join(ASSETS_DIR, "logo1.png")
 
 class ResQApp(MDApp):
     def build(self):
+        from kivymd.icon_definitions import md_icons
+        from kivymd.font_definitions import theme_font_styles
         self.title = "ResQ App"
         self.theme_cls.primary_palette = "Slategrey"
         self.theme_cls.theme_style = "Dark"
-        self.selected_contact_id = None
+        self.theme_cls.font_styles.update(theme_font_styles)
 
+        self.selected_contact_id = None
         self.logged_in_username = None
         self.lang = "en"
 
         # Load all KV files
-        Builder.load_file(os.path.join("ui", "login.kv"))
-        Builder.load_file(os.path.join("ui", "register.kv"))
-        Builder.load_file(os.path.join("ui", "forgot_pw.kv"))
-        Builder.load_file(os.path.join("ui", "patient_dashboard.kv"))
-        Builder.load_file(os.path.join("ui", "add_contact.kv"))
-        Builder.load_file(os.path.join("ui", "edit_profile.kv"))
-        Builder.load_file(os.path.join("ui", "reset_pw.kv"))
-        Builder.load_file(os.path.join("ui", "update_contacts.kv"))
-        Builder.load_file(os.path.join("ui", "doctor_dashboard.kv"))
-        Builder.load_file(os.path.join("ui", "edit_patient.kv"))
+        Builder.load_file(os.path.join("UI", "login.kv"))
+        Builder.load_file(os.path.join("UI", "register.kv"))
+        Builder.load_file(os.path.join("UI", "forgot_pw.kv"))
+        Builder.load_file(os.path.join("UI", "patient_dashboard.kv"))
+        Builder.load_file(os.path.join("UI", "add_contact.kv"))
+        Builder.load_file(os.path.join("UI", "edit_profile.kv"))
+        Builder.load_file(os.path.join("UI", "reset_pw.kv"))
+        Builder.load_file(os.path.join("UI", "update_contacts.kv"))
+        Builder.load_file(os.path.join("UI", "doctor_dashboard.kv"))
+        Builder.load_file(os.path.join("UI", "edit_patient.kv"))
 
         self.sm = MDScreenManager()
         self.sm.add_widget(LoginScreen(name="login"))
@@ -60,16 +64,20 @@ class ResQApp(MDApp):
         self.sm.add_widget(DoctorDashboardScreen(name="doctor_dashboard"))
         self.sm.add_widget(EditPatientInfoScreen(name="edit_patient_info"))
 
+        # Always start at login screen while debugging
+        self.sm.current = "login"
+
         return self.sm
 
-    def on_start(self):
-        role = self.try_auto_login()
-        if role == "patient":
-            self.sm.current = "patient_dashboard"
-        elif role == "doctor":
-            self.sm.current = "doctor_dashboard"
-        else:
-            self.sm.current = "login"
+    # Temporarily disabled auto-login to avoid redirect crash
+    # def on_start(self):
+    #     role = self.try_auto_login()
+    #     if role == "patient":
+    #         self.sm.current = "patient_dashboard"
+    #     elif role == "doctor":
+    #         self.sm.current = "doctor_dashboard"
+    #     else:
+    #         self.sm.current = "login"
 
     def try_auto_login(self):
         if os.path.exists(remember_file_path):

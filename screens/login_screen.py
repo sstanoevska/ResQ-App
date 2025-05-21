@@ -1,3 +1,10 @@
+from kivy import Config
+Config.set('graphics', 'multisamples', '0')
+Config.set('graphics', 'vsync', '0')
+Config.set('kivy', 'window', 'sdl2')
+
+
+
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDButton
 from kivymd.uix.dialog import MDDialog
