@@ -21,7 +21,7 @@
                     hint_text: "Select Role"
                     text: "patient"
                     readonly: True
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_x: 0.9
                     text_color: 0, 0, 0, 1
                     on_focus: if self.focus: root.open_role_menu()
@@ -40,7 +40,7 @@
             MDTextField:
                 id: egn_input
                 hint_text: "EGN"
-                mode: "rectangle"
+                mode: "filled"
                 size_hint_x: 0.9
                 size_hint_y: None
                 height: dp(50)
@@ -49,7 +49,7 @@
             MDTextField:
                 id: name_input
                 hint_text: "Full Name"
-                mode: "rectangle"
+                mode: "filled"
                 size_hint_x: 0.9
                 size_hint_y: None
                 height: dp(50)
@@ -58,7 +58,7 @@
             MDTextField:
                 id: username_input
                 hint_text: "Username"
-                mode: "rectangle"
+                mode: "filled"
                 size_hint_x: 0.9
                 size_hint_y: None
                 height: dp(50)
@@ -68,7 +68,7 @@
                 id: password_input
                 hint_text: "Password"
                 password: True
-                mode: "rectangle"
+                mode: "filled"
                 size_hint_x: 0.9
                 size_hint_y: None
                 height: dp(50)
@@ -78,7 +78,7 @@
                 id: confirm_password
                 hint_text: "Confirm Password"
                 password: True
-                mode: "rectangle"
+                mode: "filled"
                 size_hint_x: 0.9
                 size_hint_y: None
                 height: dp(50)
@@ -87,7 +87,7 @@
             MDTextField:
                 id: phone_input
                 hint_text: "Phone Number"
-                mode: "rectangle"
+                mode: "filled"
                 size_hint_x: 0.9
                 size_hint_y: None
                 height: dp(50)
@@ -101,12 +101,11 @@
                 MDTextField:
                     id: dob_input
                     hint_text: "Date of Birth (YYYY-MM-DD)"
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_x: 0.9
                     size_hint_y: None
                     height: dp(50)
                     pos_hint: {"center_x": 0.5}
-
 
             MDBoxLayout:
                 id: address_box
@@ -116,7 +115,7 @@
                 MDTextField:
                     id: address_input
                     hint_text: "Address"
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_x: 0.9
                     size_hint_y: None
                     height: dp(50)
@@ -130,7 +129,7 @@
                 MDTextField:
                     id: allergies_input
                     hint_text: "Allergies"
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_x: 0.9
                     size_hint_y: None
                     height: dp(50)
@@ -144,7 +143,7 @@
                 MDTextField:
                     id: diagnosis_input
                     hint_text: "Diagnosis"
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_x: 0.9
                     size_hint_y: None
                     height: dp(50)
@@ -159,14 +158,15 @@
                 MDTextField:
                     id: medications_input
                     hint_text: "Medications"
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_x: 0.9
                     size_hint_y: None
                     height: dp(50)
                     pos_hint: {"center_x": 0.5}
 
-            MDRaisedButton:
+            MDButton:
                 text: "Register"
+                style: "elevated"
                 size_hint_x: 0.5
                 size_hint_y: None
                 height: dp(50)
@@ -174,9 +174,8 @@
                 elevation: 0
                 on_release: root.register()
 
-            MDTextButton:
+            MDButton:
                 text: "Already have an account? Login here"
+                variant: "text"
                 pos_hint: {"center_x": 0.5}
                 on_release: app.root.current = "login"
-
-

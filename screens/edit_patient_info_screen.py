@@ -1,6 +1,7 @@
+from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
-from kivymd.toast import toast
+from kivymd.uix.snackbar import MDSnackbar
 import requests
 
 
@@ -29,12 +30,24 @@ class EditPatientInfoScreen(MDScreen):
         try:
             res = requests.post("https://resq-backend-iau8.onrender.com/edit-patient", json=data)
             if res.status_code == 200:
-                toast("✅ Patient info updated.")
+                MDSnackbar(MDLabel(
+                    text="✅ Patient info updated.",
+                    theme_text_color="Custom",
+                    text_color=(0, 1, 0, 1)
+                )).open()
                 self.manager.current = "doctor_dashboard"
             else:
-                toast(res.json().get("message", "Update failed."))
+                MDSnackbar(MDLabel(
+                    text=res.json().get("message", "Update failed."),
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )).open()
         except Exception as e:
-            toast(f"Error: {str(e)}")
+            MDSnackbar(MDLabel(
+                text=f"Error: {str(e)}",
+                theme_text_color="Custom",
+                text_color=(1, 0, 0, 1)
+            )).open()
 
     def go_back(self, *args):
         self.manager.current = "doctor_dashboard"

@@ -1,6 +1,7 @@
 from kivymd.uix.screen import MDScreen
 from kivy.clock import Clock
 from kivy.app import App
+from kivymd.uix.snackbar import MDSnackbar
 import requests
 
 from normalize_phone import normalize_phone
@@ -78,7 +79,3 @@ class EditProfileScreen(MDScreen):
 
     def go_back(self, *args):
         self.refresh_dashboard()
-
-
-
-

@@ -4,6 +4,7 @@ import requests
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from flask import json
+
 from screens.add_contact_screen import AddContactScreen
 from screens.doctor_dashboard import DoctorDashboardScreen
 from screens.edit_patient_info_screen import EditPatientInfoScreen
@@ -17,24 +18,25 @@ from screens.update_emergency_contact_screen import EditEmergencyContactScreen
 
 from kivy.utils import platform
 from os.path import join
-if platform == "android":
-    from android.storage import app_storage_path
-    base_path = app_storage_path()
-else:
-    base_path = os.getcwd()
-remember_file_path = join(base_path, "remember_me.txt")
+from config import remember_file_path
+
+# 🔹 Platform-specific asset paths
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
+FONT_PATH = os.path.join(ASSETS_DIR, "Quintessential-Regular.ttf")
+LOGO_PATH = os.path.join(ASSETS_DIR, "logo1.png")
 
 
 class ResQApp(MDApp):
     def build(self):
         self.title = "ResQ App"
-        self.theme_cls.primary_palette = "BlueGray"
+        self.theme_cls.primary_palette = "Slategrey"
         self.theme_cls.theme_style = "Dark"
         self.selected_contact_id = None
 
         self.logged_in_username = None
         self.lang = "en"
 
+        # Load all KV files
         Builder.load_file(os.path.join("ui", "login.kv"))
         Builder.load_file(os.path.join("ui", "register.kv"))
         Builder.load_file(os.path.join("ui", "forgot_pw.kv"))
@@ -47,7 +49,7 @@ class ResQApp(MDApp):
         Builder.load_file(os.path.join("ui", "edit_patient.kv"))
 
         self.sm = MDScreenManager()
-        self.sm.add_widget(LoginScreen(name="login")) 
+        self.sm.add_widget(LoginScreen(name="login"))
         self.sm.add_widget(RegisterScreen(name="register"))
         self.sm.add_widget(ForgotPasswordScreen(name="forgot_pw"))
         self.sm.add_widget(PatientDashboardScreen(name="patient_dashboard"))
@@ -61,7 +63,6 @@ class ResQApp(MDApp):
         return self.sm
 
     def on_start(self):
-   
         role = self.try_auto_login()
         if role == "patient":
             self.sm.current = "patient_dashboard"
@@ -84,24 +85,21 @@ class ResQApp(MDApp):
                     if response.status_code == 200:
                         data = response.json()
                         self.logged_in_username = data.get("username")
-                        self.logged_in_egn = data.get("EGN")  # Needed for loading data
+                        self.logged_in_egn = data.get("EGN")
                         self.logged_in_role = data.get("role")
                         return data.get("role")
                 except Exception as e:
                     print("Auto-login failed:", e)
         return None
 
-    def load_translations(self):
-        """Load translations from a JSON file."""
-        with open("translations.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-
-    def translate(self, key):
-        """Translate the key based on the current language."""
-        return self.translations.get(self.lang, self.translations["en"]).get(key, key)
-
     def change_screen(self, screen_name):
         self.sm.current = screen_name
+
+    def get_font_path(self):
+        return FONT_PATH
+
+    def get_logo_path(self):
+        return LOGO_PATH
 
 
 if __name__ == '__main__':

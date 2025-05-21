@@ -1,6 +1,8 @@
 from kivymd.uix.screen import MDScreen
 from kivy.clock import Clock
 from kivy.app import App
+from kivymd.uix.label import MDLabel
+from kivymd.uix.snackbar import MDSnackbar
 import requests
 
 from normalize_phone import normalize_phone
@@ -9,13 +11,12 @@ from normalize_phone import normalize_phone
 class EditEmergencyContactScreen(MDScreen):
 
     def update_contact(self):
-
         name = self.ids.name_field.text.strip()
         phone = self.ids.phone_field.text.strip()
         email = self.ids.email_field.text.strip()
-        contact_type = self.ids.contact_type_field.text.strip()  # Assuming a text field for contact type (doctor, other)
+        contact_type = self.ids.contact_type_field.text.strip()
 
-        contact_id = App.get_running_app().selected_contact_id  # Get the selected contact ID (passed from contact list)
+        contact_id = App.get_running_app().selected_contact_id
 
         updates = {}
 
@@ -49,10 +50,6 @@ class EditEmergencyContactScreen(MDScreen):
         Clock.schedule_once(self.clear_message, 5)
 
     def load_contact_data(self, contact_id):
-        from kivymd.toast import toast
-        import requests
-        from kivy.app import App
-
         try:
             username = App.get_running_app().logged_in_username
             response = requests.get(f"https://resq-backend-iau8.onrender.com/patient-dashboard?username={username}")
@@ -67,11 +64,11 @@ class EditEmergencyContactScreen(MDScreen):
                     self.ids.email_field.text = matched_contact.get("email", "")
                     self.ids.contact_type_field.text = matched_contact.get("contact_type", "")
                 else:
-                    toast("Contact not found.")
+                    MDSnackbar(MDLabel(text="Contact not found.", theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
             else:
-                toast("Failed to load contact data.")
+                MDSnackbar(MDLabel(text="Failed to load contact data.", theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
         except Exception as e:
-            toast(f"Error: {str(e)}")
+            MDSnackbar(MDLabel(text=f"Error: {str(e)}", theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
 
     def clear_message(self, dt):
         self.ids.message_label.text = ""

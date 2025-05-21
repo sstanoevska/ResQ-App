@@ -1,8 +1,9 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.toast import toast
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.clock import Clock
 from kivymd.app import MDApp
+from kivymd.uix.snackbar import MDSnackbar
+from kivymd.uix.label import MDLabel
 import requests
 
 from normalize_phone import normalize_phone
@@ -12,12 +13,17 @@ class ForgotPasswordScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-
     def send_reset_code(self):
         phone = self.ids.phone_input.text.strip()
 
         if not phone:
-            toast("Please enter your phone number")
+            MDSnackbar(
+                MDLabel(
+                    text="Please enter your phone number",
+                    theme_text_color="Custom",
+                    text_color=(1, 1, 1, 1)
+                )
+            ).open()
             return
 
         phone = normalize_phone(phone)
@@ -27,7 +33,13 @@ class ForgotPasswordScreen(MDScreen):
                 "phone": phone,
             })
             data = response.json()
-            toast(data.get("message", "Code sent!"))
+            MDSnackbar(
+                MDLabel(
+                    text=data.get("message", "Code sent!"),
+                    theme_text_color="Custom",
+                    text_color=(1, 1, 1, 1)
+                )
+            ).open()
 
             if response.status_code == 200:
                 reset_screen = self.manager.get_screen("reset_pw")
@@ -35,7 +47,13 @@ class ForgotPasswordScreen(MDScreen):
                 self.manager.current = "reset_pw"
 
         except Exception as e:
-            toast(f"Error: {str(e)}")
+            MDSnackbar(
+                MDLabel(
+                    text=f"Error: {str(e)}",
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )
+            ).open()
 
     def go_back(self, *args):
         self.manager.current = "login"

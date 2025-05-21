@@ -1,20 +1,34 @@
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.screen import MDScreen
-from kivymd.toast import toast
+from kivymd.uix.snackbar import MDSnackbar
+from kivymd.uix.label import MDLabel
 from kivy.properties import BooleanProperty
 import requests
 import os
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.metrics import dp
+from kivy.utils import platform
+from os.path import join
 
-from main import remember_file_path  
+# 🔹 Avoid circular import by defining path here
+try:
+    if platform == "android":
+        from android.storage import app_storage_path
+        base_path = app_storage_path()
+    else:
+        base_path = os.getcwd()
+except ImportError:
+    base_path = os.getcwd()
+
+remember_file_path = join(base_path, "remember_me.txt")
 
 
 class HelpContent(BoxLayout):
     pass
+
 
 class LoginScreen(MDScreen):
     remember_me = BooleanProperty(False)
@@ -34,7 +48,10 @@ class LoginScreen(MDScreen):
         remember = self.ids.remember_checkbox.active
 
         if not username or not password:
-            toast("Please enter both username and password")
+            MDSnackbar(MDLabel(
+                text="Please enter both username and password",
+                theme_text_color="Custom", text_color=(1, 1, 1, 1)
+            )).open()
             return
 
         try:
@@ -50,7 +67,10 @@ class LoginScreen(MDScreen):
 
             if response.status_code == 200:
                 self.ids.status_label.text_color = (0, 1, 0, 1)
-                toast(message)
+                MDSnackbar(MDLabel(
+                    text=message,
+                    theme_text_color="Custom", text_color=(1, 1, 1, 1)
+                )).open()
 
                 token = data.get("token")
                 if remember and token:
@@ -69,22 +89,27 @@ class LoginScreen(MDScreen):
                     self.manager.current = "doctor_dashboard"
             else:
                 self.ids.status_label.text_color = (1, 0, 0, 1)
-                toast(message)
+                MDSnackbar(MDLabel(
+                    text=message,
+                    theme_text_color="Custom", text_color=(1, 0, 0, 1)
+                )).open()
 
         except Exception as e:
             error_msg = f"Error: {str(e)}"
             self.ids.status_label.text = error_msg
             self.ids.status_label.text_color = (1, 0, 0, 1)
-            toast(error_msg)
+            MDSnackbar(MDLabel(
+                text=error_msg,
+                theme_text_color="Custom", text_color=(1, 0, 0, 1)
+            )).open()
 
     def save_token(self, token):
         try:
-            with open(remember_file_path, "w") as file: 
+            with open(remember_file_path, "w") as file:
                 file.write(token)
             print("Token saved for auto-login")
         except Exception as e:
             print(f" Failed to save token: {e}")
-
 
     help_dialog = None
 
@@ -112,7 +137,7 @@ class LoginScreen(MDScreen):
                     "- Use the [b]Delete[/b] icon to remove patients who are no longer under your care.\n"
                 ),
                 buttons=[
-                    MDFlatButton(text="Got it!", on_release=lambda x: self.help_dialog.dismiss())
+                    MDButton(text="Got it!", style="outlined", on_release=lambda x: self.help_dialog.dismiss())
                 ],
                 size_hint=(0.9, None),
                 md_bg_color=(0.8, 0.4, 0.5, 1)

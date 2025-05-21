@@ -2,7 +2,7 @@ import hashlib
 
 import pymysql
 from hashlib import sha256
-
+import os
 from flask import Flask, request, jsonify, session
 from database.db_operations import (
     register_doctor, register_patient, login_user,

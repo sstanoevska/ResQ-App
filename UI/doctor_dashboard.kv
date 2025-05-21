@@ -35,8 +35,9 @@
             size: self.texture_size
             text_size: None, None
 
-        MDRaisedButton:
+        MDButton:
             text: "Log out"
+            style: "elevated"
             pos_hint: {"right": 0.98, "top": 0.98}
             elevation: 0
             on_release: root.logout()
@@ -64,8 +65,9 @@
                     MDList:
                         id: doctor_info_box
 
-                MDFlatButton:
+                MDButton:
                     text: "Edit Profile"
+                    style: "outlined"
                     pos_hint: {"center_x": 0.5}
                     size_hint: None, None
                     size: "140dp", "40dp"
@@ -88,7 +90,7 @@
 
                     MDLabel:
                         text: "My Patients"
-                        font_style: "H6"
+                        font_size: "18sp"
                         halign: "right"
                         theme_text_color: "Custom"
                         text_color: 0, 0, 0, 1

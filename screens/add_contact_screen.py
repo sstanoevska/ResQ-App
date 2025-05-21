@@ -1,6 +1,7 @@
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
-from kivymd.toast import toast
+from kivymd.uix.snackbar import MDSnackbar
+from kivymd.uix.label import MDLabel
 import requests
 
 from normalize_phone import normalize_phone
@@ -15,12 +16,17 @@ class AddContactScreen(MDScreen):
 
         phone = normalize_phone(phone)
         if not name or not phone or not contact_type:
-            toast("Please fill in all required fields")
+            MDSnackbar(
+                MDLabel(
+                    text="Please fill in all required fields",
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )
+            ).open()
             return
 
         user_egn = App.get_running_app().logged_in_egn
         print("[DEBUG] Raw user EGN from app:", user_egn)
-
 
         try:
             response = requests.post("https://resq-backend-iau8.onrender.com/add-emergency-contact", json={
@@ -32,14 +38,30 @@ class AddContactScreen(MDScreen):
             })
 
             if response.status_code == 200:
-                toast(response.json().get("message", "Contact added!"))
+                MDSnackbar(
+                    MDLabel(
+                        text=response.json().get("message", "Contact added!"),
+                        theme_text_color="Custom",
+                        text_color=(0, 1, 0, 1)
+                    )
+                ).open()
                 self.manager.current = "patient_dashboard"
             else:
-                toast(response.json().get("message", "Failed to add contact"))
+                MDSnackbar(
+                    MDLabel(
+                        text=response.json().get("message", "Failed to add contact"),
+                        theme_text_color="Custom",
+                        text_color=(1, 0, 0, 1)
+                    )
+                ).open()
         except Exception as e:
-            toast(f"Error: {str(e)}")
-
+            MDSnackbar(
+                MDLabel(
+                    text=f"Error: {str(e)}",
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )
+            ).open()
 
     def go_back(self, *args):
         self.manager.current = "patient_dashboard"
-

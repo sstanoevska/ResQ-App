@@ -5,7 +5,7 @@
         MDLabel:
             text: "ResQ Login"
             halign: "center"
-            font_style: "H3"
+            font_size: "24sp"
             pos_hint: {"center_x": 0.5, "center_y": 0.85}
 
         MDBoxLayout:
@@ -14,7 +14,6 @@
             size: dp(130), dp(40)
             pos_hint: {"right": 0.98, "top": 0.98}
 
-        # 👇 Help icon added here
         MDBoxLayout:
             orientation: "horizontal"
             size_hint_y: None
@@ -40,7 +39,7 @@
         MDTextField:
             id: username_input
             hint_text: "Username"
-            mode: "rectangle"
+            mode: "filled"
             pos_hint: {"center_x": 0.5, "center_y": 0.65}
             size_hint_x: 0.8
 
@@ -48,12 +47,13 @@
             id: password_input
             hint_text: "Password"
             password: True
-            mode: "rectangle"
+            mode: "filled"
             pos_hint: {"center_x": 0.5, "center_y": 0.52}
             size_hint_x: 0.8
 
-        MDRaisedButton:
+        MDButton:
             text: "Login"
+            style: "elevated"
             pos_hint: {"center_x": 0.5, "center_y": 0.40}
             on_release: root.login()
 
@@ -77,14 +77,14 @@
                 size_hint_y: None
                 height: dp(24)
 
-        MDTextButton:
+        MDButton:
             text: "Forgot Password?"
+            variant: "text"
             pos_hint: {"center_x": 0.5, "center_y": 0.22}
             on_release: app.root.current = "forgot_pw"
 
-        MDTextButton:
-            text:"No account yet? Register here"
+        MDButton:
+            text: "No account yet? Register here"
+            variant: "text"
             pos_hint: {"center_x": 0.5}
             on_release: app.root.current = "register"
-
-

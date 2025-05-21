@@ -1,5 +1,6 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.toast import toast
+from kivymd.uix.snackbar import MDSnackbar
+from kivymd.uix.label import MDLabel
 from kivymd.app import MDApp
 import requests
 
@@ -10,7 +11,13 @@ class ResetPasswordScreen(MDScreen):
         new_password = self.ids.new_password_input.text.strip()
 
         if not all([phone, code, new_password]):
-            toast("Please fill in all fields.")
+            MDSnackbar(
+                MDLabel(
+                    text="Please fill in all fields.",
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )
+            ).open()
             return
 
         try:
@@ -22,16 +29,27 @@ class ResetPasswordScreen(MDScreen):
 
             data = response.json()
             message = data.get("message", "Something went wrong.")
-            toast(message)
+            MDSnackbar(
+                MDLabel(
+                    text=message,
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )
+            ).open()
 
             if data.get("success"):
                 MDApp.get_running_app().change_screen("login")
             elif data.get("locked_out"):
-                # Go back to login if locked out
                 MDApp.get_running_app().change_screen("login")
 
         except Exception as e:
-            toast(f"Error: {str(e)}")
+            MDSnackbar(
+                MDLabel(
+                    text=f"Error: {str(e)}",
+                    theme_text_color="Custom",
+                    text_color=(1, 0, 0, 1)
+                )
+            ).open()
 
     def go_back(self, *args):
         self.manager.current = "forgot_pw"

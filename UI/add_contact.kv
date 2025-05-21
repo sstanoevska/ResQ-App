@@ -30,7 +30,7 @@
                     id: name_input
                     hint_text: "Full Name"
                     icon_right: "account"
-                    mode: "rectangle"
+                    mode: "filled"
                     color_mode: 'custom'
                     text_color: 0, 0, 0, 1
                     hint_text_color_normal: 0, 0, 0, 1
@@ -43,7 +43,7 @@
                     id: phone_input
                     hint_text: "Phone Number"
                     icon_right: "phone"
-                    mode: "rectangle"
+                    mode: "filled"
                     color_mode: 'custom'
                     text_color: 0, 0, 0, 1
                     hint_text_color_normal: 0, 0, 0, 1
@@ -56,7 +56,7 @@
                     id: contact_type_input
                     hint_text: "Contact Type (e.g., Doctor)"
                     icon_right: "stethoscope"
-                    mode: "rectangle"
+                    mode: "filled"
                     color_mode: 'custom'
                     text_color: 0, 0, 0, 1
                     hint_text_color_normal: 0, 0, 0, 1
@@ -69,7 +69,7 @@
                     id: email_input
                     hint_text: "Email (optional)"
                     icon_right: "email"
-                    mode: "rectangle"
+                    mode: "filled"
                     color_mode: 'custom'
                     text_color: 0, 0, 0, 1
                     hint_text_color_normal: 0, 0, 0, 1
@@ -78,8 +78,9 @@
                     size_hint_y: None
                     height: "70dp"
 
-                MDFlatButton:
+                MDButton:
                     text: "Add Contact"
+                    style: "elevated"
                     size_hint: None, None
                     size: "220dp", "50dp"
                     pos_hint: {"center_x": 0.5}

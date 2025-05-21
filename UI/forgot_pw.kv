@@ -28,13 +28,14 @@
                     hint_text: "Phone Number"
                     helper_text: "Format: +359XXXXXXXXX"
                     helper_text_mode: "on_focus"
-                    mode: "rectangle"
+                    mode: "filled"
                     size_hint_y: None
                     height: "50dp"
 
                 # Send Reset Code Button
-                MDFlatButton:
+                MDButton:
                     text: "Send Reset Code"
+                    style: "elevated"
                     md_bg_color: 0.2, 0.6, 1, 1
                     pos_hint: {"center_x": 0.5}
                     size_hint: None, None

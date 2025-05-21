@@ -1,10 +1,12 @@
+import json
+import os
+
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
-from kivymd.toast import toast
+from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDIconButton
-from kivymd.uix.list import OneLineAvatarIconListItem, IconLeftWidget
+from kivymd.uix.button import MDButton, MDIconButton
 from kivymd.uix.label import MDLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -13,6 +15,7 @@ import requests
 
 class DoctorDashboardScreen(MDScreen):
     def on_enter(self):
+        print("Logo exists?", os.path.exists("assets/logo1.png"))
         Clock.schedule_once(lambda dt: self.load_dashboard(), 0.5)
 
     def load_dashboard(self):
@@ -24,6 +27,7 @@ class DoctorDashboardScreen(MDScreen):
             })
 
             data = response.json()
+            print(json.dumps(data, indent=2))
             if response.status_code != 200:
                 self.show_error(data.get("message", "Error loading dashboard"))
                 return
@@ -51,15 +55,32 @@ class DoctorDashboardScreen(MDScreen):
             ("map-marker", "Address", self.doctor_info.get("address")),
         ]
 
-        for icon, label, value in fields:
+        for icon_name, label, value in fields:
             if value:
-                item = OneLineAvatarIconListItem(
+                item_box = BoxLayout(
+                    orientation="horizontal",
+                    size_hint_y=None,
+                    height="48dp",
+                    spacing="10dp",
+                    padding=("5dp", "0dp")
+                )
+                icon = MDIconButton(
+                    icon=icon_name,
+                    theme_text_color="Custom",
+                    text_color=(1, 1, 1, 1),
+                    size_hint=(None, None),
+                    size=("40dp", "40dp")
+                )
+                label_widget = MDLabel(
                     text=f"{label}: {value}",
                     theme_text_color="Custom",
-                    text_color=(1, 1, 1, 1)
+                    text_color=(1, 1, 1, 1),
+                    halign="left",
+                    valign="middle"
                 )
-                item.add_widget(IconLeftWidget(icon=icon, theme_text_color="Custom", text_color=(1, 1, 1, 1)))
-                self.ids.doctor_info_box.add_widget(item)
+                item_box.add_widget(icon)
+                item_box.add_widget(label_widget)
+                self.ids.doctor_info_box.add_widget(item_box)
 
     def show_patients(self):
         self.ids.patients_list.clear_widgets()
@@ -71,7 +92,7 @@ class DoctorDashboardScreen(MDScreen):
                     orientation="horizontal", size_hint_y=None, height="48dp", padding="5dp", spacing="10dp"
                 )
 
-                patient_box.add_widget(IconLeftWidget(icon="account", theme_text_color="Custom", text_color=(0, 0, 0, 1)))
+                patient_box.add_widget(MDIconButton(icon="account", theme_text_color="Custom", text_color=(0, 0, 0, 1)))
 
                 patient_box.add_widget(MDLabel(
                     text=f"{patient['name']} - {patient['phone']}",
@@ -105,8 +126,8 @@ class DoctorDashboardScreen(MDScreen):
             type="custom",
             content_cls=self.patient_input,
             buttons=[
-                MDFlatButton(text="Assign", on_release=self.assign_patient_to_doctor),
-                MDFlatButton(text="Cancel", on_release=lambda x: self.dialog.dismiss())
+                MDButton(text="Assign", style="outlined", on_release=self.assign_patient_to_doctor),
+                MDButton(text="Cancel", style="outlined", on_release=lambda x: self.dialog.dismiss())
             ]
         )
         self.dialog.open()
@@ -128,7 +149,8 @@ class DoctorDashboardScreen(MDScreen):
             if response.status_code == 200:
                 self.dialog.dismiss()
                 self.load_dashboard()
-                toast("Patient successfully assigned.")
+                MDSnackbar(MDLabel(text="Patient successfully assigned.",
+                                   theme_text_color="Custom", text_color=(0, 1, 0, 1))).open()
             else:
                 self.show_error(response.json().get("message", "Failed to assign patient."))
         except Exception as e:
@@ -146,21 +168,25 @@ class DoctorDashboardScreen(MDScreen):
             })
             if res.status_code == 200:
                 self.load_dashboard()
-                toast("Patient removed.")
+                MDSnackbar(
+                    MDLabel(
+                        text="Patient removed.",
+                        theme_text_color="Custom",
+                        text_color=(1, 1, 1, 1),
+                    )
+                ).open()
             else:
                 self.show_error(res.json().get("message", "Deletion failed."))
         except Exception as e:
             self.show_error(str(e))
-
-
 
     def confirm_delete_patient(self, patient_egn):
         self.delete_dialog = MDDialog(
             title="Delete Patient?",
             text="Are you sure you want to remove this patient?",
             buttons=[
-                MDFlatButton(text="Cancel", on_release=lambda x: self.delete_dialog.dismiss()),
-                MDFlatButton(text="Delete", on_release=lambda x: self.delete_patient(patient_egn))
+                MDButton(text="Cancel", style="outlined", on_release=lambda x: self.delete_dialog.dismiss()),
+                MDButton(text="Delete", style="outlined", on_release=lambda x: self.delete_patient(patient_egn))
             ]
         )
         self.delete_dialog.open()
@@ -169,10 +195,9 @@ class DoctorDashboardScreen(MDScreen):
         dialog = MDDialog(
             title="Error",
             text=message,
-            buttons=[MDFlatButton(text="OK", on_release=lambda x: dialog.dismiss())]
+            buttons=[MDButton(text="OK", style="outlined", on_release=lambda x: dialog.dismiss())]
         )
         dialog.open()
-
 
     def open_edit_profile_screen(self):
         self.manager.current = "edit_profile"
@@ -182,7 +207,6 @@ class DoctorDashboardScreen(MDScreen):
         self.manager.current = "edit_patient_info"
 
     def view_patient_details(self, patient):
-        # If you plan to open a screen for full details instead of dialog
         App.get_running_app().selected_patient = patient
         self.manager.current = "view_patient_info"
 
