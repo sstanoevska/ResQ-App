@@ -1,6 +1,7 @@
 <RegisterScreen>:
     MDFloatLayout:
         md_bg_color: 0.05, 0.1, 0.2, 1  # Lighter burgundy background
+
     ScrollView:
         MDBoxLayout:
             orientation: "vertical"
@@ -29,13 +30,6 @@
                 MDIconButton:
                     icon: "menu-down"
                     on_release: root.open_role_menu()
-
-            MDBoxLayout:
-                orientation: "horizontal"
-                size_hint_y: None
-                height: dp(50)
-                size_hint_x: 0.9
-                pos_hint: {"center_x": 0.5}
 
             MDTextField:
                 id: egn_input
@@ -154,7 +148,6 @@
                 orientation: "vertical"
                 size_hint_y: None
                 height: dp(60)
-
                 MDTextField:
                     id: medications_input
                     hint_text: "Medications"
@@ -176,6 +169,6 @@
 
             MDButton:
                 text: "Already have an account? Login here"
-                variant: "text"
+                style: "text"
                 pos_hint: {"center_x": 0.5}
                 on_release: app.root.current = "login"

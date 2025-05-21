@@ -23,7 +23,7 @@ version = 0.1
 
 # (list) Application requirements
 # Use the master branch of KivyMD instead of deprecated 1.2.0
-requirements = python3==3.10.13,kivy,https://github.com/kivymd/KivyMD/archive/master.zip,requests,pymysql,bcrypt,cryptography,python-dotenv,twilio,sdl2,pyjnius
+requirements = python3==3.10.13,kivy,https://github.com/kivymd/KivyMD/archive/master.zip,setuptools,six,idna,urllib3,requests,pymysql,bcrypt,cryptography,python-dotenv,twilio,sdl2,pyjnius
 
 # (str) Icon of the application
 icon.filename = icon.png
@@ -51,7 +51,7 @@ android.allow_backup = True
 
 # (list) List of directory to exclude
 source.exclude_dirs = venv, __pycache__
-android.gradle_dependencies=com.android.tools:common:30.0.0
+
 
 [buildozer]
 
