@@ -32,9 +32,8 @@ class ResQApp(MDApp):
         from kivymd.icon_definitions import md_icons
         from kivymd.font_definitions import theme_font_styles
         self.title = "ResQ App"
-        self.theme_cls.primary_palette = "Slategrey"
+        self.theme_cls.primary_palette = "BlueGray"
         self.theme_cls.theme_style = "Dark"
-        self.theme_cls.font_styles.update(theme_font_styles)
 
         self.selected_contact_id = None
         self.logged_in_username = None

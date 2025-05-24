@@ -6,7 +6,7 @@ from kivy.app import App
 from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDButton, MDIconButton
+from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDIconButton
 from kivymd.uix.label import MDLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -126,8 +126,8 @@ class DoctorDashboardScreen(MDScreen):
             type="custom",
             content_cls=self.patient_input,
             buttons=[
-                MDButton(text="Assign", style="outlined", on_release=self.assign_patient_to_doctor),
-                MDButton(text="Cancel", style="outlined", on_release=lambda x: self.dialog.dismiss())
+                MDRaisedButton(text="Assign", on_release=self.assign_patient_to_doctor),
+                MDFlatButton(text="Cancel", on_release=lambda x: self.dialog.dismiss())
             ]
         )
         self.dialog.open()
@@ -185,8 +185,8 @@ class DoctorDashboardScreen(MDScreen):
             title="Delete Patient?",
             text="Are you sure you want to remove this patient?",
             buttons=[
-                MDButton(text="Cancel", style="outlined", on_release=lambda x: self.delete_dialog.dismiss()),
-                MDButton(text="Delete", style="outlined", on_release=lambda x: self.delete_patient(patient_egn))
+                MDFlatButton(text="Cancel", on_release=lambda x: self.delete_dialog.dismiss()),
+                MDRaisedButton(text="Delete", on_release=lambda x: self.delete_patient(patient_egn))
             ]
         )
         self.delete_dialog.open()
@@ -195,7 +195,7 @@ class DoctorDashboardScreen(MDScreen):
         dialog = MDDialog(
             title="Error",
             text=message,
-            buttons=[MDButton(text="OK", style="outlined", on_release=lambda x: dialog.dismiss())]
+            buttons=[MDFlatButton(text="OK", on_release=lambda x: dialog.dismiss())]
         )
         dialog.open()
 

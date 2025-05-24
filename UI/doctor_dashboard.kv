@@ -4,7 +4,6 @@
     MDFloatLayout:
         md_bg_color: 1, 1, 1, 1
 
-        # Logo and Greeting
         BoxLayout:
             orientation: 'vertical'
             spacing: "10dp"
@@ -35,21 +34,18 @@
             size: self.texture_size
             text_size: None, None
 
-        MDButton:
+        MDRaisedButton:
             text: "Log out"
-            style: "elevated"
             pos_hint: {"right": 0.98, "top": 0.98}
             elevation: 0
             on_release: root.logout()
 
-        # Main Content
         MDBoxLayout:
             orientation: "horizontal"
             size_hint: 1, 0.75
             pos_hint: {"top": 0.80}
             padding: "10dp"
 
-            # LEFT - Doctor Info (Shorter + aligned up)
             MDBoxLayout:
                 orientation: "vertical"
                 size_hint_x: 0.28
@@ -65,17 +61,13 @@
                     MDList:
                         id: doctor_info_box
 
-                MDButton:
+                MDFlatButton:
                     text: "Edit Profile"
-                    style: "outlined"
                     pos_hint: {"center_x": 0.5}
                     size_hint: None, None
                     size: "140dp", "40dp"
-                    md_bg_color: 0.7, 0.2, 0.2, 1
-                    elevation: 0
                     on_release: root.open_edit_profile_screen()
 
-            # RIGHT - Patient List
             MDBoxLayout:
                 orientation: "vertical"
                 size_hint_x: 0.5
@@ -110,7 +102,6 @@
                         height: self.minimum_height
                         spacing: "10dp"
 
-        # Appreciation Quote at Bottom Center
         MDFloatLayout:
             size_hint_y: None
             height: "50dp"
@@ -122,4 +113,4 @@
                 halign: "center"
                 theme_text_color: "Custom"
                 text_color: 0.2, 0.2, 0.2, 1
-                pos_hint: {"center_x": 0.46, "y": 0}  # Slightly to the left
+                pos_hint: {"center_x": 0.46, "y": 0}

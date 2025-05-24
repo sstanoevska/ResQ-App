@@ -17,7 +17,6 @@
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
             md_bg_color: 0.27, 0.51, 0.71, 1
-            title_color: 1, 1, 1, 1
 
         ScrollView:
             MDGridLayout:
@@ -30,14 +29,14 @@
                 MDTextField:
                     id: name_field
                     hint_text: "Enter your new name"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: username_field
                     hint_text: "Enter your new username"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
@@ -45,28 +44,23 @@
                     id: phone_field
                     hint_text: "Enter your new phone number"
                     input_filter: "int"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: address_field
                     hint_text: "Enter your new address"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
-                MDButton:
-                    style: "elevated"
+                MDRaisedButton:
+                    text: "Update Profile"
                     size_hint: None, None
                     size: "200dp", "50dp"
                     pos_hint: {"center_x": 0.5}
                     on_release: root.update_profile()
-
-                    MDButtonText:
-                        text: "Update Profile"
-                        theme_text_color: "Custom"
-                        text_color: 1, 1, 1, 1
 
                 MDLabel:
                     id: message_label
@@ -79,4 +73,3 @@
                     size_hint_y: None
                     font_size: "16sp"
                     text_size: self.width, None
-                    height: self.texture_size[1]

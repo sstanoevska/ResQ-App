@@ -3,7 +3,7 @@ from kivy.app import App
 from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDButton, MDIconButton
+from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDIconButton
 from kivymd.uix.label import MDLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -42,7 +42,6 @@ class PatientDashboardScreen(MDScreen):
                                theme_text_color="Custom", text_color=(1, 0, 0, 1))).open()
 
     def show_patient_info(self):
-        print("➡️ Starting show_patient_info()")
         self.ids.patient_info_box.clear_widgets()
 
         fields = [
@@ -56,7 +55,6 @@ class PatientDashboardScreen(MDScreen):
         ]
 
         for icon_name, label, value in fields:
-            print(f"🔍 Processing: {label} = {value}")
             if value:
                 try:
                     item_box = BoxLayout(
@@ -88,7 +86,6 @@ class PatientDashboardScreen(MDScreen):
 
     def show_contacts(self):
         self.ids.contacts_list.clear_widgets()
-        print("➡️ Starting show_contacts()")
 
         for contact in self.contacts:
             contact_box = BoxLayout(
@@ -141,8 +138,6 @@ class PatientDashboardScreen(MDScreen):
 
             self.ids.contacts_list.add_widget(contact_box)
 
-            print("✅ Finished show_contacts()")
-
     def make_confirm_delete(self, contact):
         def confirm_delete_wrapper(instance):
             self.confirm_delete(contact)
@@ -160,8 +155,8 @@ class PatientDashboardScreen(MDScreen):
             title="Delete Contact?",
             text=f"Are you sure you want to delete {contact['name']}?",
             buttons=[
-                MDButton(text="Cancel", style="outlined", on_release=lambda x: self.dialog.dismiss()),
-                MDButton(text="Delete", style="outlined", on_release=lambda x: self.delete_contact(contact))
+                MDFlatButton(text="Cancel", on_release=lambda x: self.dialog.dismiss()),
+                MDRaisedButton(text="Delete", on_release=lambda x: self.delete_contact(contact))
             ]
         )
         self.dialog.open()
@@ -186,13 +181,10 @@ class PatientDashboardScreen(MDScreen):
         self.manager.get_screen("add_contact").open_add_contact_popup()
 
     def update_contact(self):
-        pass  # Your original method here
+        pass
 
     def send_alert(self, alert_type):
         from kivy.clock import Clock
-        import requests
-        from kivy.app import App
-
         app = App.get_running_app()
         egn = app.logged_in_egn
 
@@ -219,17 +211,6 @@ class PatientDashboardScreen(MDScreen):
         self.ids.custom_alert_box.opacity = 0
         self.ids.custom_alert_label.text = ""
 
-    def clear_alert_message(self, dt):
-        self.ids.alert_box.opacity = 0
-        self.ids.alert_message_label.text = ""
-
-    def clear_alert_message(self, dt):
-        self.ids.alert_message_label.text = ""
-        self.ids.alert_box.opacity = 0
-
-    def clear_alert_message(self, dt):
-        self.ids.alert_message_label.text = ""
-
     def verify_contact(self, contact_id, code):
         try:
             response = requests.post("https://resq-backend-iau8.onrender.com/verify-contact", json={
@@ -253,5 +234,4 @@ class PatientDashboardScreen(MDScreen):
         self.manager.current = "patient_profile"
 
     def logout(self):
-        print("✅ Logout called")
-        self.manager.current="login"
+        self.manager.current = "login"

@@ -6,7 +6,7 @@ Config.set('kivy', 'window', 'sdl2')
 
 
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.button import MDButton
+from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.snackbar import MDSnackbar
@@ -134,8 +134,8 @@ class LoginScreen(MDScreen):
                     "[b]Step 4: Use the Panic Buttons[/b]\n"
                     "In case of emergency:\n"
                     "- Press the [b]Doctor[/b] button (red button) to alert your doctor.\n"
-                    "- Press the [b]Others[/b] button (blue button) to alert all your other emergency contacts. \n"
-                    "- Your emergency contacts will receive your SMS for help under the name InfoSys. \n"
+                    "- Press the [b]Others[/b] button (blue button) to alert all your other emergency contacts.\n"
+                    "- Your emergency contacts will receive your SMS for help under the name InfoSys.\n"
                     "[b]Pro Tip:[/b] After adding a new contact, send a test alert using the buttons to make sure they receive your messages and their number is reachable.\n\n"
                     "[b]For Doctors:[/b]\n"
                     "Once registered as a [b]doctor[/b], you'll see a list of assigned patients.\n"
@@ -144,9 +144,10 @@ class LoginScreen(MDScreen):
                     "- Use the [b]Delete[/b] icon to remove patients who are no longer under your care.\n"
                 ),
                 buttons=[
-                    MDButton(text="Got it!", style="outlined", on_release=lambda x: self.help_dialog.dismiss())
+                    MDFlatButton(text="Got it!", on_release=lambda x: self.help_dialog.dismiss())
                 ],
                 size_hint=(0.9, None),
                 md_bg_color=(0.8, 0.4, 0.5, 1)
             )
         self.help_dialog.open()
+

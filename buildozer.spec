@@ -42,7 +42,7 @@ android.ndk = 25b
 
 # (str) Android NDK directory (optional if downloaded automatically)
 android.ndk_path = /home/sarastanoevska/.buildozer/android/platform/android-ndk-r25b
-
+android.opengl_es2=True
 # (list) The Android archs to build for
 android.archs = arm64-v8a, armeabi-v7a
 

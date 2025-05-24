@@ -15,9 +15,7 @@
             title: "Add Emergency Contact"
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
-            theme_bg_color: "Custom"
             md_bg_color: 0.27, 0.51, 0.71, 1
-            title_color: 1, 1, 1, 1
 
         ScrollView:
             MDGridLayout:
@@ -31,7 +29,7 @@
                     id: name_input
                     hint_text: "Full Name"
                     icon_right: "account"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
@@ -39,7 +37,7 @@
                     id: phone_input
                     hint_text: "Phone Number"
                     icon_right: "phone"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
@@ -47,7 +45,7 @@
                     id: contact_type_input
                     hint_text: "Contact Type (e.g., Doctor)"
                     icon_right: "stethoscope"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
@@ -55,19 +53,14 @@
                     id: email_input
                     hint_text: "Email (optional)"
                     icon_right: "email"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
-                MDButton:
-                    style: "elevated"
+                MDRaisedButton:
+                    text: "Add Contact"
                     size_hint: None, None
                     size: "220dp", "50dp"
                     pos_hint: {"center_x": 0.5}
-                    theme_bg_color: "Custom"
                     md_bg_color: 0.27, 0.51, 0.71, 1
                     on_release: root.add_contact(self)
-                    MDButtonText:
-                        text: "Add Contact"
-                        theme_text_color: "Custom"
-                        text_color: 1, 1, 1, 1

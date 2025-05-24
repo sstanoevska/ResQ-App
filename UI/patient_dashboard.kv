@@ -2,7 +2,6 @@
     MDFloatLayout:
         md_bg_color: 1, 1, 1, 1
 
-        # Logo and Motto
         BoxLayout:
             orientation: 'vertical'
             spacing: "10dp"
@@ -19,48 +18,30 @@
                 keep_ratio: True
                 pos_hint: {"center_x": 0.5}
 
-        # Greeting
-        MDBoxLayout:
+        MDLabel:
+            id: greeting_label
+            text: "Welcome back, User!"
+            font_size: "20sp"
+            halign: "left"
+            valign: "top"
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            pos_hint: {"x": 0.02, "top": 0.95}
             size_hint: None, None
-            size: self.minimum_size
-            pos_hint: {"x": 0.02, "top": 0.94}
-            padding: "10dp"
-            MDLabel:
-                id: greeting_label
-                text: "Welcome back, User!"
-                font_size: "22sp"
-                bold: True
-                size_hint: None, None
-                size: self.texture_size
-                theme_text_color: "Custom"
-                text_color: 0, 0, 0, 1
-                halign: "left"
-                valign: "middle"
-                text_size: None, None
+            text_size: None, None
 
-        # Log out button
-        MDButton:
-            style: "elevated"
-            theme_bg_color: "Custom"
-            md_bg_color: 0.15, 0.15, 0.15, 1
-            size_hint: None, None
-            size: "100dp", "40dp"
+        MDRaisedButton:
+            text: "Log out"
             pos_hint: {"right": 0.98, "top": 0.98}
+            elevation: 0
             on_release: root.logout()
 
-            MDButtonText:
-                text: "Log out"
-                theme_text_color: "Custom"
-                text_color: 1, 1, 1, 1
-
-        # Main layout
         MDBoxLayout:
             orientation: "horizontal"
-            size_hint: 1, 0.75
-            pos_hint: {"top": 0.83}
+            size_hint: 1, 0.8
+            pos_hint: {"top": 0.80}
             padding: "10dp"
 
-            # LEFT - Patient Info
             MDBoxLayout:
                 orientation: "vertical"
                 size_hint_x: 0.30
@@ -70,121 +51,76 @@
                 radius: [20, 20, 20, 20]
 
                 ScrollView:
-                    MDBoxLayout:
+                    MDList:
                         id: patient_info_box
-                        orientation: "vertical"
-                        size_hint_y: None
-                        height: self.minimum_height
-                        spacing: "8dp"
 
-                MDButton:
-                    style: "elevated"
-                    theme_bg_color: "Custom"
-                    md_bg_color: 0.8, 0.2, 0.2, 1
+                MDRaisedButton:
+                    text: "Edit profile"
+                    pos_hint: {"center_x": 0.5}
                     size_hint: None, None
                     size: "140dp", "40dp"
-                    pos_hint: {"center_x": 0.5}
+                    md_bg_color: 0.7, 0.2, 0.2, 1
+                    elevation: 0
                     on_release: root.open_edit_profile_screen()
-                    MDButtonText:
-                        text: "Edit profile"
-                        theme_text_color: "Custom"
-                        text_color: 1, 1, 1, 1
 
-            # CENTER - Panic Buttons and Alert
-            # CENTER - Panic Buttons and Alert
             MDBoxLayout:
                 orientation: "vertical"
                 size_hint_x: 0.3
-                spacing: "10dp"
-                padding: "10dp", "80dp" # pushes everything downward
-                pos_hint: {"center_y": 0.4}
+                spacing: "20dp"
+                padding: "10dp"
+                pos_hint: {"center_y": 0.6}
 
                 BoxLayout:
                     orientation: "horizontal"
-                    spacing: "50dp"
+                    spacing: "60dp"
                     size_hint_y: None
-                    height: "80dp"
+                    height: "120dp"
+                    padding: "10dp"
                     pos_hint: {"center_x": 0.5}
 
-                    MDBoxLayout:
+                    MDRaisedButton:
+                        text: ""
+                        md_bg_color: 1, 0, 0, 1
+                        on_release: root.send_alert("doctor")
                         size_hint: None, None
-                        size: "60dp", "60dp"
-                        radius: [30]
-                        md_bg_color: 1, 0, 0, 1  # red
-                        padding: "5dp"
-                        MDIconButton:
-                            icon: "account-heart"
-                            theme_text_color: "Custom"
-                            text_color: 1, 1, 1, 1
-                            size_hint: None, None
-                            size: "50dp", "50dp"
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            on_release: root.send_alert("doctor")
+                        size: "80dp", "80dp"
+                        elevation: 0
 
-                    MDBoxLayout:
+                    MDRaisedButton:
+                        text: ""
+                        md_bg_color: 0, 0, 1, 1
+                        on_release: root.send_alert("others")
                         size_hint: None, None
-                        size: "60dp", "60dp"
-                        radius: [30]
-                        md_bg_color: 0, 0, 1, 1  # blue
-                        padding: "5dp"
-                        MDIconButton:
-                            icon: "account-group"
-                            theme_text_color: "Custom"
-                            text_color: 1, 1, 1, 1
-                            size_hint: None, None
-                            size: "50dp", "50dp"
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            on_release: root.send_alert("others")
+                        size: "80dp", "80dp"
+                        elevation: 0
 
                 BoxLayout:
-                    spacing: "50dp"
+                    spacing: "60dp"
                     size_hint_y: None
                     height: "20dp"
-                    pos_hint: {"center_x": 0.47}
+                    padding: "0dp"
+                    pos_hint: {"center_x": 0.5}
+
                     MDLabel:
                         text: "Doctor"
                         halign: "center"
                         theme_text_color: "Custom"
                         text_color: 0, 0, 0, 1
+                        elevation: 0
                     MDLabel:
                         text: "Others"
                         halign: "center"
                         theme_text_color: "Custom"
                         text_color: 0, 0, 0, 1
+                        elevation: 0
 
-                MDBoxLayout:
-                    id: custom_alert_box
-                    orientation: "horizontal"
-                    size_hint: None, None
-                    size: "260dp", "30dp"  # ✅ fixed size
-                    pos_hint: {"center_x": 0.5}
-                    md_bg_color: 0, 0, 0, 1
-                    padding: "10dp", "6dp"
-                    radius: [10]
-                    opacity: 0
-
-                    MDLabel:
-                        id: custom_alert_label
-                        text: ""
-                        font_size: "12sp"
-                        theme_text_color: "Custom"
-                        text_color: 1, 1, 1, 1
-                        halign: "center"
-                        valign: "middle"
-                        size_hint: 1, 1
-                        text_size: self.size  # ✅ allows horizontal wrapping
-
-
-
-
-            # RIGHT - Emergency Contacts
             MDBoxLayout:
                 orientation: "vertical"
                 size_hint_x: 0.5
                 padding: "20dp"
                 spacing: "20dp"
 
-                MDBoxLayout:
+                BoxLayout:
                     orientation: "horizontal"
                     size_hint_y: None
                     height: "60dp"
@@ -193,7 +129,6 @@
                     MDLabel:
                         text: "Emergency Contacts"
                         font_size: "18sp"
-                        bold: True
                         halign: "left"
                         size_hint_x: 0.9
                         theme_text_color: "Custom"
@@ -201,9 +136,8 @@
 
                     MDIconButton:
                         icon: "plus"
-                        style: "standard"
-                        theme_icon_color: "Custom"
-                        icon_color: 0, 0, 0, 1
+                        theme_text_color: "Custom"
+                        text_color: 0, 0, 0, 1
                         on_release: root.manager.current = "add_contact"
 
                 ScrollView:
@@ -212,16 +146,19 @@
                         orientation: "vertical"
                         size_hint_y: None
                         height: self.minimum_height
+                        width: self.width
+                        size_hint_x: 1
                         spacing: "10dp"
+                        padding: "0dp"
 
-        # Appreciation Quote
         MDLabel:
-            text: "\"The bravest thing you can do is ask for help — and it only takes one tap!\""
+            text: "\"The bravest thing you can do is ask for help — and it only takes one tap ❤\""
+            font_name: "assets/Quintessential-Regular.ttf"
             font_size: "16sp"
             size_hint: None, None
             size: 600, 30
-            pos_hint: {"center_x": 0.5, "y": 0.01}
-            halign: "center"
+            pos_hint: {"right": 0.98, "y": 0.01}
+            halign: "right"
             valign: "middle"
             text_size: self.size
             theme_text_color: "Custom"

@@ -17,7 +17,6 @@
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
             md_bg_color: 0.27, 0.51, 0.71, 1
-            title_color: 1, 1, 1, 1
 
         ScrollView:
             MDGridLayout:
@@ -30,53 +29,48 @@
                 MDTextField:
                     id: name_field
                     hint_text: "Name"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: phone_field
                     hint_text: "Phone"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: address_field
                     hint_text: "Address"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: diagnosis_field
                     hint_text: "Diagnosis"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: medications_field
                     hint_text: "Medications"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
                 MDTextField:
                     id: allergies_field
                     hint_text: "Allergies"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "70dp"
 
-                MDButton:
-                    style: "elevated"
+                MDRaisedButton:
+                    text: "Save"
                     on_release: root.save_changes()
                     size_hint: None, None
                     size: "150dp", "45dp"
                     pos_hint: {"center_x": 0.5}
-
-                    MDButtonText:
-                        text: "Save"
-                        theme_text_color: "Custom"
-                        text_color: 1, 1, 1, 1

@@ -1,44 +1,42 @@
 <ForgotPasswordScreen>:
     name: "forgot_password"
 
-    MDBoxLayout:
+    BoxLayout:
         orientation: "vertical"
-        md_bg_color: 0.0, 0.2, 0.4, 1
+        canvas.before:
+            Color:
+                rgba: 0.0, 0.2, 0.4, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
 
-        # Top section with Back arrow and Title
         MDTopAppBar:
             title: "Forgot Password"
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
             md_bg_color: 0.27, 0.51, 0.71, 1
-            title_color: 1, 1, 1, 1
 
-        # Scrollable container for input fields
         ScrollView:
-            MDBoxLayout:
+            BoxLayout:
                 orientation: "vertical"
                 padding: "20dp"
                 spacing: "20dp"
                 size_hint_y: None
                 height: self.minimum_height
 
-                # Phone Number input field
                 MDTextField:
                     id: phone_input
                     hint_text: "Phone Number"
                     helper_text: "Format: +359XXXXXXXXX"
                     helper_text_mode: "on_focus"
-                    mode: "filled"
+                    mode: "rectangle"
                     size_hint_y: None
                     height: "50dp"
 
-                # Send Reset Code Button
-                MDButton:
+                MDRaisedButton:
                     text: "Send Reset Code"
-                    style: "elevated"
                     md_bg_color: 0.2, 0.6, 1, 1
                     pos_hint: {"center_x": 0.5}
                     size_hint: None, None
                     size: dp(200), dp(50)
-                    elevation: 0
                     on_release: root.send_reset_code()
