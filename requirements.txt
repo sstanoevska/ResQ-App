@@ -32,7 +32,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 Kivy==2.2.0
 Kivy-Garden==0.1.5
-kivymd @ git+https://github.com/kivymd/KivyMD.git@master
+kivymd==1.2.0
 MarkupSafe==3.0.2
 materialyoucolor==2.0.10
 multidict==6.4.4

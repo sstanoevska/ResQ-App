@@ -1,4 +1,3 @@
-from kivymd.icon_definitions import md_icons
 from kivy.lang import Builder
 import os
 import requests
