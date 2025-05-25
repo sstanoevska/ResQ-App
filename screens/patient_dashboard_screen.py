@@ -96,7 +96,10 @@ class PatientDashboardScreen(MDScreen):
                 padding=("5dp", "0dp")
             )
 
-            icon_name = "stethoscope" if contact['contact_type'] == 'doctor' else "account"
+            name = contact.get("name", "Unknown")
+            phone = contact.get("phone", "N/A")
+            icon_name = "stethoscope" if contact.get('contact_type') == 'doctor' else "account"
+
             icon = MDIconButton(
                 icon=icon_name,
                 theme_text_color="Custom",
@@ -107,7 +110,9 @@ class PatientDashboardScreen(MDScreen):
             contact_box.add_widget(icon)
 
             label = MDLabel(
-                text=f"{contact['name']} - {contact['phone']}",
+                text=f"{name} - {phone}",
+                shorten=True,
+                max_lines=1,
                 theme_text_color="Custom",
                 text_color=(0, 0, 0, 1),
                 size_hint_x=0.6,

@@ -84,21 +84,32 @@ class DoctorDashboardScreen(MDScreen):
 
     def show_patients(self):
         self.ids.patients_list.clear_widgets()
-        print("🔄 Refreshing patient list")
+        print("Refreshing patient list")
 
         for patient in self.patients:
             try:
+                name = patient.get("name", "Unknown")
+                phone = patient.get("phone", "N/A")
+
                 patient_box = BoxLayout(
                     orientation="horizontal", size_hint_y=None, height="48dp", padding="5dp", spacing="10dp"
                 )
 
-                patient_box.add_widget(MDIconButton(icon="account", theme_text_color="Custom", text_color=(0, 0, 0, 1)))
+                patient_box.add_widget(MDIconButton(
+                    icon="account",
+                    theme_text_color="Custom",
+                    text_color=(0, 0, 0, 1)
+                ))
 
                 patient_box.add_widget(MDLabel(
-                    text=f"{patient['name']} - {patient['phone']}",
+                    text=f"{name} - {phone}",
+                    shorten=True,
+                    max_lines=1,
                     theme_text_color="Custom",
                     text_color=(0, 0, 0, 1),
-                    size_hint_x=0.6
+                    size_hint_x=0.6,
+                    halign="left",
+                    valign="middle"
                 ))
 
                 pencil_icon = MDIconButton(icon="pencil", theme_text_color="Custom", text_color=(0, 0, 0, 1))
@@ -106,7 +117,7 @@ class DoctorDashboardScreen(MDScreen):
                 patient_box.add_widget(pencil_icon)
 
                 trash_icon = MDIconButton(icon="trash-can", theme_text_color="Custom", text_color=(0, 0, 0, 1))
-                trash_icon.bind(on_release=lambda x, e=patient["EGN"]: self.confirm_delete_patient(e))
+                trash_icon.bind(on_release=lambda x, e=patient.get("EGN"): self.confirm_delete_patient(e))
                 patient_box.add_widget(trash_icon)
 
                 self.ids.patients_list.add_widget(patient_box)
