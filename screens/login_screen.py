@@ -1,4 +1,8 @@
 from kivy import Config
+from kivy.uix.label import Label
+from kivy.uix.scrollview import ScrollView
+
+
 Config.set('graphics', 'multisamples', '0')
 Config.set('graphics', 'vsync', '0')
 Config.set('kivy', 'window', 'sdl2')
@@ -122,32 +126,46 @@ class LoginScreen(MDScreen):
 
     def show_help_dialog(self):
         if not self.help_dialog:
+            scroll = ScrollView(
+                do_scroll_x=False,
+                bar_width=5,
+                size_hint=(1, None),
+                size=(Window.width * 0.8, Window.height * 0.6)
+            )
+
+            help_text = (
+                "ResQ is your emergency companion — here to help when it matters most.\n\n"
+                "For Patients:\n"
+                "1. Register as a patient with your name, phone, and EGN.\n"
+                "2. Use the '+' button to add emergency contacts.\n"
+                "3. Edit your profile to update medical info.\n"
+                "4. Use the red button to alert your doctor, or the blue button to alert other contacts.\n"
+                "Messages are sent via SMS under the name InfoSys.\n\n"
+                "For Doctors:\n"
+                "You can assign patients via EGN, edit their info, or remove them from your care list.\n\n"
+                "Data Policy:\n"
+                "If you wish to delete your profile, please contact us at support@resqapp.com.\n"
+                "Your data will be permanently removed from our system within 1–3 business days.\n\n"
+                "By using this app, you consent to the use of your data solely for purposes essential to the functionality of ResQ."
+            )
+
+            content = Label(
+                text=help_text,
+                font_size="15sp",
+                size_hint_y=None,
+                text_size=(Window.width * 0.8, None),
+                halign="left",
+                valign="top"
+            )
+            content.bind(texture_size=lambda instance, size: setattr(instance, 'height', size[1]))
+            scroll.add_widget(content)
+
             self.help_dialog = MDDialog(
-                title="[b]How to Use ResQ?[/b]",
-                text=(
-                    "ResQ is your emergency companion — here to help when it matters most.\n"
-                    "[b]For Patients:[/b]\n\n"
-                    "[b]Step 1: Create Your Profile[/b]\n"
-                    "Register as a [b]patient[/b] by entering your full name, phone number, and EGN (Personal ID Number).\n"
-                    "[b]Step 2: Once logged in, use the [b]Add Contact[/b] button (plus sign [+] on the right side of the dashboard) to add trusted people — your doctor, family, friends, or neighbors — who should be notified in an emergency.\n"
-                    "[b]Step 3: Tap the [b]Edit Profile[/b] button (pencil icon) to update your personal information, including allergies, medications, address, and phone number.\n"
-                    "[b]Step 4: Use the Panic Buttons[/b]\n"
-                    "In case of emergency:\n"
-                    "- Press the [b]Doctor[/b] button (red button) to alert your doctor.\n"
-                    "- Press the [b]Others[/b] button (blue button) to alert all your other emergency contacts.\n"
-                    "- Your emergency contacts will receive your SMS for help under the name InfoSys.\n"
-                    "[b]Pro Tip:[/b] After adding a new contact, send a test alert using the buttons to make sure they receive your messages and their number is reachable.\n\n"
-                    "[b]For Doctors:[/b]\n"
-                    "Once registered as a [b]doctor[/b], you'll see a list of assigned patients.\n"
-                    "- Use the [b]+[/b] button to assign new patients by entering their EGN. They have to be users of the app in order to be assigned.\n"
-                    "- Tap the [b]Edit[/b] icon to update patient details if needed. You can also use it to see a patient's information.\n"
-                    "- Use the [b]Delete[/b] icon to remove patients who are no longer under your care.\n"
-                ),
-                buttons=[
-                    MDFlatButton(text="Got it!", on_release=lambda x: self.help_dialog.dismiss())
-                ],
+                title="How to Use ResQ?",
+                type="custom",
+                content_cls=scroll,
+                buttons=[MDFlatButton(text="OK", on_release=lambda x: self.help_dialog.dismiss())],
                 size_hint=(0.9, None),
-                md_bg_color=(0.8, 0.4, 0.5, 1)
+                radius=[20, 20, 20, 20],
             )
         self.help_dialog.open()
-
