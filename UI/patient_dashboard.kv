@@ -1,70 +1,43 @@
 <PatientDashboardScreen>:
-    MDFloatLayout:
+    MDBoxLayout:
         md_bg_color: 1, 1, 1, 1
+        orientation: 'vertical'
+        MDTopAppBar:
+            id: greeting_label
+            title: "Welcome back, Patient!"
+            elevation: 4
+            left_action_items: [["account", None]]
+            right_action_items: [["logout", lambda x: root.logout()]]
+            md_bg_color: 0.27, 0.51, 0.71, 1
+        MDBoxLayout:
+            ScrollView:
+                do_scroll_x: False
 
-        ScrollView:
-            do_scroll_x: False
-
-            MDBoxLayout:
-                orientation: "vertical"
-                size_hint_y: None
-                height: self.minimum_height
-                padding: "10dp"
-                spacing: "10dp"
-
-                BoxLayout:
-                    orientation: 'horizontal'
-                    size_hint_y: None
-                    height: "130dp"
+                MDBoxLayout:
+                    orientation: "vertical"
                     padding: "10dp"
                     spacing: "10dp"
-
-                    MDLabel:
-                        id: greeting_label
-                        text: "Welcome back, User!"
-                        font_size: "20sp"
-                        theme_text_color: "Custom"
-                        text_color: 0, 0, 0, 1
-                        halign: "left"
-                        valign: "middle"
-                        text_size: self.width, None
-                        size_hint_x: 0.7
-                        size_hint_y: None
-                        height: self.texture_size[1]
-
+                    adaptive_height: True
                     Image:
                         source: "assets/logo1.png"
                         size_hint: None, None
                         size: "120dp", "120dp"
                         allow_stretch: True
                         keep_ratio: True
+                        pos_hint:{'center_x': 0.5}
 
-                MDRaisedButton:
-                    text: "Log out"
-                    pos_hint: {"right": 0.98}
-                    elevation: 0
-                    size_hint: None, None
-                    size: "100dp", "40dp"
-                    on_release: root.logout()
 
-                MDBoxLayout:
-                    orientation: "horizontal"
-                    spacing: "10dp"
-                    size_hint_y: None
-                    height: self.minimum_height
-                    width: self.width
-
-                    MDBoxLayout:
+                    MDCard:
                         orientation: "vertical"
-                        size_hint_x: 0.35
+                        #size_hint_x: 0.35
                         padding: "10dp"
                         spacing: "10dp"
+                        adaptive_height: True
                         md_bg_color: 0.9, 0.3, 0.3, 1
                         radius: [20, 20, 20, 20]
 
-                        ScrollView:
-                            MDList:
-                                id: patient_info_box
+                        MDList:
+                            id: patient_info_box
 
                         MDRaisedButton:
                             text: "Edit profile"
@@ -76,17 +49,16 @@
                             on_release: root.open_edit_profile_screen()
 
                     MDBoxLayout:
-                        orientation: "vertical"
-                        size_hint_x: 0.35
                         spacing: "20dp"
                         padding: "10dp"
-                        pos_hint: {"center_y": 0.6}
+                        adaptive_height: True
 
-                        BoxLayout:
-                            orientation: "horizontal"
+                        MDBoxLayout:
+                            orientation: "vertical"
                             spacing: "60dp"
-                            size_hint_y: None
-                            height: "120dp"
+                            adaptive_height: True
+                            #size_hint_y: None
+                            #height: "120dp"
                             padding: "10dp"
 
                             MDRaisedButton:
@@ -96,6 +68,20 @@
                                 size_hint: None, None
                                 size: "80dp", "80dp"
                                 elevation: 0
+                                pos_hint: {'center_x': 0.5}
+                            MDLabel:
+                                text: "Doctor"
+                                halign: "center"
+                                theme_text_color: "Custom"
+                                text_color: 0, 0, 0, 1
+                                pos_hint: {'center_x': 0.5}
+
+
+                        MDBoxLayout:
+                            spacing: "60dp"
+                            adaptive_height: True
+                            orientation: 'vertical'
+                            padding: "10dp"
 
                             MDRaisedButton:
                                 text: ""
@@ -104,28 +90,19 @@
                                 size_hint: None, None
                                 size: "80dp", "80dp"
                                 elevation: 0
-
-                        BoxLayout:
-                            spacing: "60dp"
-                            size_hint_y: None
-                            height: "20dp"
-
-                            MDLabel:
-                                text: "Doctor"
-                                halign: "center"
-                                theme_text_color: "Custom"
-                                text_color: 0, 0, 0, 1
+                                pos_hint: {'center_x': 0.5}
                             MDLabel:
                                 text: "Others"
                                 halign: "center"
                                 theme_text_color: "Custom"
                                 text_color: 0, 0, 0, 1
+                                pos_hint: {'center_x': 0.5}
 
                     MDBoxLayout:
                         orientation: "vertical"
-                        size_hint_x: 0.5
                         padding: "20dp"
                         spacing: "20dp"
+                        adaptive_height: True
 
                         BoxLayout:
                             orientation: "horizontal"
@@ -147,23 +124,24 @@
                                 text_color: 0, 0, 0, 1
                                 on_release: root.manager.current = "add_contact"
 
-                        ScrollView:
-                            MDBoxLayout:
-                                id: contacts_list
-                                orientation: "vertical"
-                                size_hint_y: None
-                                height: self.minimum_height
-                                spacing: "10dp"
+                        MDBoxLayout:
+                            id: contacts_list
+                            orientation: "vertical"
+                            adaptive_height:True
+                            spacing: "10dp"
 
-                MDLabel:
-                    text: "\"The bravest thing you can do is ask for help — and it only takes one tap ❤\""
-                    font_name: "assets/Quintessential-Regular.ttf"
-                    font_size: "16sp"
-                    size_hint: None, None
-                    size: 600, 30
-                    pos_hint: {"right": 0.98, "y": 0.01}
-                    halign: "right"
-                    valign: "middle"
-                    text_size: self.size
-                    theme_text_color: "Custom"
-                    text_color: 0.2, 0.2, 0.2, 1
+                    MDSeparator:
+                    Widget:
+                    MDLabel:
+                        text: "\"The bravest thing you can do is ask for help — and it only takes one tap ❤\""
+                        font_name: "assets/Quintessential-Regular.ttf"
+                        font_size: "16sp"
+                        size_hint_y: None
+                        size: 600, 30
+                        pos_hint: {"right": 0.98, "y": 0.01}
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+                        theme_text_color: "Custom"
+                        text_color: 0.2, 0.2, 0.2, 1
+                    Widget:

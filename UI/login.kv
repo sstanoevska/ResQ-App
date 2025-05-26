@@ -1,11 +1,12 @@
 <LoginScreen>:
     MDFloatLayout:
-        md_bg_color: 0.501, 0, 0.125, 1  # Burgundy color
+        md_bg_color: 0.501, 0, 0.125, 1#'#ab2957' # Burgundy color
 
-        MDLabel:
+        Label:
             text: "ResQ Login"
             halign: "center"
-            font_size: "24sp"
+            bold: True
+            font_size: "40sp"
             pos_hint: {"center_x": 0.5, "center_y": 0.85}
 
         MDBoxLayout:
@@ -26,9 +27,11 @@
 
             MDIconButton:
                 icon: "comment-question-outline"
+                theme_text_color: 'Custom'
+                text_color: 'white'
                 on_release: root.show_help_dialog()
 
-        MDLabel:
+        Label:
             id: status_label
             text: ""
             halign: "center"
@@ -40,19 +43,37 @@
 
         MDTextField:
             id: username_input
+            text: 'viktornov'
+            #text: 'lidijadan'
             hint_text: "Username"
             pos_hint: {"center_x": 0.5, "center_y": 0.65}
             size_hint_x: 0.8
+            line_color_focus: "white"
+            hint_text_color_focus: "white"
+            text_color_focus: "white"
+            line_color_normal: "grey"
+            hint_text_color_normal: "grey"
+            text_color_normal: "grey"
 
         MDTextField:
             id: password_input
+            text: 'Viktor123***'
+            #text: 'Lidija123***'
+
             hint_text: "Password"
             password: True
             pos_hint: {"center_x": 0.5, "center_y": 0.52}
             size_hint_x: 0.8
+            line_color_focus: "white"
+            hint_text_color_focus: "white"
+            text_color_focus: "white"
+            line_color_normal: "grey"
+            hint_text_color_normal: "grey"
+            text_color_normal: "grey"
 
         MDRaisedButton:
             text: "Login"
+            md_bg_color: 0.27, 0.51, 0.71, 1
             pos_hint: {"center_x": 0.5, "center_y": 0.40}
             on_release: root.login()
 
@@ -67,10 +88,13 @@
                 id: remember_checkbox
                 size_hint: None, None
                 size: dp(24), dp(24)
+                color_active: 'white'
+                color_inactive: 'white'
 
             MDLabel:
                 text: "Remember Me"
-                theme_text_color: "Secondary"
+                theme_text_color: "Custom"
+                text_color: 'white'
                 halign: "left"
                 valign: "middle"
                 size_hint_y: None
@@ -79,9 +103,13 @@
         MDFlatButton:
             text: "Forgot Password?"
             pos_hint: {"center_x": 0.5, "center_y": 0.22}
+            theme_text_color: 'Custom'
+            text_color: 'white'
             on_release: app.root.current = "forgot_pw"
 
         MDFlatButton:
             text: "No account yet? Register here"
             pos_hint: {"center_x": 0.5}
+            theme_text_color: 'Custom'
+            text_color: 'white'
             on_release: app.root.current = "register"

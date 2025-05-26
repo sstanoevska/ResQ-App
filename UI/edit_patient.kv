@@ -1,76 +1,72 @@
 <EditPatientInfoScreen>:
     name: "edit_patient_info"
-    BoxLayout:
+    MDBoxLayout:
         orientation: 'vertical'
-        padding: [30, 30, 30, 30]
         spacing: 20
-
-        canvas.before:
-            Color:
-                rgba: 1, 1, 1, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
 
         MDTopAppBar:
             title: "Edit Patient Information"
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
             md_bg_color: 0.27, 0.51, 0.71, 1
-
-        ScrollView:
-            MDGridLayout:
-                cols: 1
-                spacing: 20
-                padding: "10dp"
-                size_hint_y: None
-                height: self.minimum_height
-
-                MDTextField:
-                    id: name_field
-                    hint_text: "Name"
-                    mode: "rectangle"
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: [30, 30, 30, 30]
+            spacing: 20
+            ScrollView:
+                MDGridLayout:
+                    cols: 1
+                    spacing: 20
+                    padding: "10dp"
                     size_hint_y: None
-                    height: "70dp"
+                    height: self.minimum_height
 
-                MDTextField:
-                    id: phone_field
-                    hint_text: "Phone"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: name_field
+                        hint_text: "  Name"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: address_field
-                    hint_text: "Address"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: phone_field
+                        hint_text: "  Phone"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: diagnosis_field
-                    hint_text: "Diagnosis"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: address_field
+                        hint_text: "  Address"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: medications_field
-                    hint_text: "Medications"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: diagnosis_field
+                        hint_text: "  Diagnosis"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: allergies_field
-                    hint_text: "Allergies"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: medications_field
+                        hint_text: "  Medications"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDRaisedButton:
-                    text: "Save"
-                    on_release: root.save_changes()
-                    size_hint: None, None
-                    size: "150dp", "45dp"
-                    pos_hint: {"center_x": 0.5}
+                    MDTextField:
+                        id: allergies_field
+                        hint_text: "  Allergies"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
+                    Widget:
+                    MDRaisedButton:
+                        text: "Save"
+                        on_release: root.save_changes()
+                        size_hint: 1, None
+                        #size: "150dp", "45dp"
+                        md_bg_color: 0.27, 0.51, 0.71, 1
+                        pos_hint: {"center_x": 0.5}

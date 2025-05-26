@@ -1,75 +1,82 @@
 <EditProfileScreen>:
     name: "edit_profile_screen"
-    BoxLayout:
+    MDBoxLayout:
         orientation: 'vertical'
-        padding: [30, 30, 30, 30]
+        #padding: [30, 30, 30, 30]
         spacing: 20
+        #md_bg_color: 0.5,.5,.5,1
 
-        canvas.before:
-            Color:
-                rgba: 1, 1, 1, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
+#        canvas.before:
+#            Color:
+#                rgba: 1, 1, 1, 1
+#            Rectangle:
+#                size: self.size
+#                pos: self.pos
 
         MDTopAppBar:
             title: "Edit Your Profile"
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
             md_bg_color: 0.27, 0.51, 0.71, 1
-
-        ScrollView:
-            MDGridLayout:
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-                spacing: 20
-                padding: "10dp"
-
-                MDTextField:
-                    id: name_field
-                    hint_text: "Enter your new name"
-                    mode: "rectangle"
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: [30, 30, 30, 30]
+            spacing: 20
+            ScrollView:
+                MDGridLayout:
+                    cols: 1
                     size_hint_y: None
-                    height: "70dp"
+                    height: self.minimum_height
+                    spacing: 20
+                    padding: "10dp"
 
-                MDTextField:
-                    id: username_field
-                    hint_text: "Enter your new username"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: name_field
+                        hint_text: "  Enter your new name"
+                        mode: "rectangle"
+                        #md_bg_color: 0.5,.5,.5,1
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: phone_field
-                    hint_text: "Enter your new phone number"
-                    input_filter: "int"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: username_field
+                        hint_text: "  Enter your new username"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: address_field
-                    hint_text: "Enter your new address"
-                    mode: "rectangle"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: phone_field
+                        hint_text: "  Enter your new phone number"
+                        input_filter: "int"
+                        mode: "rectangle"
+                        #md_bg_color: 0.5,.5,.5,1
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDRaisedButton:
-                    text: "Update Profile"
-                    size_hint: None, None
-                    size: "200dp", "50dp"
-                    pos_hint: {"center_x": 0.5}
-                    on_release: root.update_profile()
+                    MDTextField:
+                        id: address_field
+                        hint_text: "  Enter your new address"
+                        mode: "rectangle"
+                        size_hint_y: None
+                        height: "70dp"
+                    Widget:
+                    MDRaisedButton:
+                        text: "Update Profile"
+                        size_hint: 0.95, None
+                        #size: "200dp", "50dp"
+                        pos_hint: {"center_x": 0.5}
+                        md_bg_color: 0.27, 0.51, 0.71, 1
+                        on_release: root.update_profile()
 
-                MDLabel:
-                    id: message_label
-                    text: ""
-                    markup: True
-                    theme_text_color: "Custom"
-                    text_color: 0, 0.5, 0, 1
-                    halign: "center"
-                    valign: "middle"
-                    size_hint_y: None
-                    font_size: "16sp"
-                    text_size: self.width, None
+                    MDLabel:
+                        id: message_label
+                        text: ""
+                        markup: True
+                        theme_text_color: "Custom"
+                        text_color: 0, 0.5, 0, 1
+                        halign: "center"
+                        valign: "middle"
+                        size_hint_y: None
+                        font_size: "16sp"
+                        text_size: self.width, None

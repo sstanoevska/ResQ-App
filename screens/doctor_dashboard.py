@@ -1,6 +1,8 @@
 import json
 import os
 
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.list import IRightBodyTouch,TwoLineAvatarIconListItem
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
 from kivymd.uix.snackbar import MDSnackbar
@@ -10,7 +12,16 @@ from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDIconButton
 from kivymd.uix.label import MDLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
+from kivy.properties import StringProperty
 import requests
+
+
+class ListContainer(IRightBodyTouch, MDBoxLayout):
+    adaptive_width = True
+
+class CustomList(TwoLineAvatarIconListItem):
+    text = StringProperty()
+    secondary_text = StringProperty()
 
 
 class DoctorDashboardScreen(MDScreen):
@@ -84,46 +95,59 @@ class DoctorDashboardScreen(MDScreen):
 
     def show_patients(self):
         self.ids.patients_list.clear_widgets()
-        print("Refreshing patient list")
 
         for patient in self.patients:
             try:
-                name = patient.get("name", "Unknown")
-                phone = patient.get("phone", "N/A")
+                item=CustomList(text=patient.get("name", "Unknown"),
+                                secondary_text=f"Phone: {patient.get('phone', 'N/A')}")
 
-                patient_box = BoxLayout(
-                    orientation="horizontal", size_hint_y=None, height="48dp", padding="5dp", spacing="10dp"
-                )
-
-                patient_box.add_widget(MDIconButton(
-                    icon="account",
-                    theme_text_color="Custom",
-                    text_color=(0, 0, 0, 1)
-                ))
-
-                patient_box.add_widget(MDLabel(
-                    text=f"{name} - {phone}",
-                    shorten=True,
-                    max_lines=1,
-                    theme_text_color="Custom",
-                    text_color=(0, 0, 0, 1),
-                    size_hint_x=0.6,
-                    halign="left",
-                    valign="middle"
-                ))
-
-                pencil_icon = MDIconButton(icon="pencil", theme_text_color="Custom", text_color=(0, 0, 0, 1))
-                pencil_icon.bind(on_release=lambda x, p=patient: self.open_edit_patient_screen(p))
-                patient_box.add_widget(pencil_icon)
-
-                trash_icon = MDIconButton(icon="trash-can", theme_text_color="Custom", text_color=(0, 0, 0, 1))
-                trash_icon.bind(on_release=lambda x, e=patient.get("EGN"): self.confirm_delete_patient(e))
-                patient_box.add_widget(trash_icon)
-
-                self.ids.patients_list.add_widget(patient_box)
+                self.ids.patients_list.add_widget(item)
+                item.ids.edit.bind(on_release=lambda x, p=patient: self.open_edit_patient_screen(p))
+                item.ids.delete.bind(on_release=lambda x, e=patient.get("EGN"): self.confirm_delete_patient(e))
 
             except Exception as e:
                 print(f"Error displaying patient: {e}")
+        # self.ids.patients_list.clear_widgets()
+        # print("Refreshing patient list")
+        #
+        # for patient in self.patients:
+        #     try:
+        #         name = patient.get("name", "Unknown")
+        #         phone = patient.get("phone", "N/A")
+        #
+        #         patient_box = BoxLayout(
+        #             orientation="horizontal", size_hint_y=None, height="48dp", padding="5dp", spacing="10dp"
+        #         )
+        #
+        #         patient_box.add_widget(MDIconButton(
+        #             icon="account",
+        #             theme_text_color="Custom",
+        #             text_color=(0, 0, 0, 1)
+        #         ))
+        #
+        #         patient_box.add_widget(MDLabel(
+        #             text=f"{name} - {phone}",
+        #             shorten=True,
+        #             max_lines=1,
+        #             theme_text_color="Custom",
+        #             text_color=(0, 0, 0, 1),
+        #             size_hint_x=0.6,
+        #             halign="left",
+        #             valign="middle"
+        #         ))
+        #
+        #         pencil_icon = MDIconButton(icon="pencil", theme_text_color="Custom", text_color=(0, 0, 0, 1))
+        #         pencil_icon.bind(on_release=lambda x, p=patient: self.open_edit_patient_screen(p))
+        #         patient_box.add_widget(pencil_icon)
+        #
+        #         trash_icon = MDIconButton(icon="trash-can", theme_text_color="Custom", text_color=(0, 0, 0, 1))
+        #         trash_icon.bind(on_release=lambda x, e=patient.get("EGN"): self.confirm_delete_patient(e))
+        #         patient_box.add_widget(trash_icon)
+        #
+        #         self.ids.patients_list.add_widget(patient_box)
+        #
+        #     except Exception as e:
+        #         print(f"Error displaying patient: {e}")
 
     def open_assign_patient_dialog(self):
         self.patient_input = MDTextField(

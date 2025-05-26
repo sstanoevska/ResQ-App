@@ -41,8 +41,8 @@ class RegisterScreen(MDScreen):
     def set_role_visibility(self, value):
         show = value == "patient"
         for box in [
-            self.ids.dob_box, self.ids.address_box,
-            self.ids.allergies_box, self.ids.diagnosis_box, self.ids.medications_box
+            self.ids.dob_input, self.ids.address_input,
+            self.ids.allergies_input, self.ids.diagnosis_input, self.ids.medications_input
         ]:
             box.height = dp(60) if show else 0
             box.opacity = 1 if show else 0

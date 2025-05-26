@@ -149,7 +149,7 @@ class LoginScreen(MDScreen):
                 "By using this app, you consent to the use of your data solely for purposes essential to the functionality of ResQ."
             )
 
-            content = Label(
+            content = MDLabel(
                 text=help_text,
                 font_size="15sp",
                 size_hint_y=None,

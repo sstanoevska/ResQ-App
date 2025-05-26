@@ -1,9 +1,40 @@
+<CustomList>:
+    text: ""
+    secondary_text: ''
+    _no_ripple_effect: True
+
+    on_size:
+        self.ids._right_container.width = container.width
+        self.ids._right_container.x = container.width
+
+    IconLeftWidget:
+        icon: "account"
+
+    ListContainer:
+        id: container
+        MDIconButton:
+            id: edit
+            icon: "pencil"
+
+        MDIconButton:
+            id: delete
+            icon: "trash-can"
+
+
+
 <DoctorDashboardScreen>:
     name: "doctor_dashboard"
 
-    MDFloatLayout:
+    MDBoxLayout:
         md_bg_color: 1, 1, 1, 1
-
+        orientation: 'vertical'
+        MDTopAppBar:
+            id: greeting_label
+            title: "Welcome back, Doctor!"
+            elevation: 4
+            left_action_items: [["account", None]]
+            right_action_items: [["logout", lambda x: root.logout()]]
+            md_bg_color: 0.27, 0.51, 0.71, 1
         ScrollView:
             do_scroll_x: False
 
@@ -14,107 +45,75 @@
                 padding: "10dp"
                 spacing: "10dp"
 
-                # HEADER: Greeting + Logo
-                BoxLayout:
-                    orientation: "horizontal"
+                Image:
+                    source: "assets/logo1.png"
+                    size_hint_x: 0.3
                     size_hint_y: None
-                    height: self.minimum_height
-                    spacing: "10dp"
+                    height: "100dp"
+                    allow_stretch: True
+                    keep_ratio: True
+                    pos_hint: {'center_x': 0.5}
+
+
+
+                # LEFT - Doctor Info
+                MDCard:
+                    orientation: "vertical"
+
                     padding: "10dp"
-
-                    MDLabel:
-                        id: greeting_label
-                        text: "Welcome back, Doctor!"
-                        font_name: "assets/Quintessential-Regular.ttf"
-                        font_size: "20sp"
-                        theme_text_color: "Custom"
-                        text_color: 0, 0, 0, 1
-                        size_hint_x: 0.7
-                        text_size: self.size
-                        halign: "left"
-                        valign: "top"
-                        shorten: False
-                        max_lines: 3
-
-                    Image:
-                        source: "assets/logo1.png"
-                        size_hint_x: 0.3
-                        size_hint_y: None
-                        height: "100dp"
-                        allow_stretch: True
-                        keep_ratio: True
-
-                MDRaisedButton:
-                    text: "Log out"
-                    pos_hint: {"right": 0.98}
-                    elevation: 0
-                    size_hint: None, None
-                    size: "100dp", "40dp"
-                    on_release: root.logout()
-
-                # MAIN CONTENT
-                MDBoxLayout:
-                    orientation: "horizontal"
                     spacing: "10dp"
-                    size_hint_y: None
-                    height: self.minimum_height
-                    width: self.width
+                    md_bg_color: 0.9, 0.3, 0.3, 1
+                    radius: [20, 20, 20, 20]
+                    adaptive_height: True
 
-                    # LEFT - Doctor Info
-                    MDBoxLayout:
-                        orientation: "vertical"
-                        size_hint_x: 0.35
-                        padding: "10dp"
-                        spacing: "10dp"
-                        md_bg_color: 0.9, 0.3, 0.3, 1
-                        radius: [20, 20, 20, 20]
+                    MDList:
+                        id: doctor_info_box
 
-                        ScrollView:
-                            MDList:
-                                id: doctor_info_box
+                    MDRaisedButton:
+                        text: "Edit profile"
+                        pos_hint: {"center_x": 0.5}
+                        size_hint: None, None
+                        size: "140dp", "40dp"
+                        md_bg_color: 0.7, 0.2, 0.2, 1
+                        elevation: 0
+                        on_release: root.open_edit_profile_screen()
 
-                        MDFlatButton:
-                            text: "Edit Profile"
-                            pos_hint: {"center_x": 0.5}
-                            size_hint: None, None
-                            size: "140dp", "40dp"
-                            on_release: root.open_edit_profile_screen()
+                # RIGHT - Patient List
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: "10dp"
+                    spacing: "10dp"
 
-                    # RIGHT - Patient List
-                    MDBoxLayout:
-                        orientation: "vertical"
-                        size_hint_x: 0.6
-                        padding: "10dp"
+                    BoxLayout:
+                        orientation: "horizontal"
+                        size_hint_y: None
+                        height: "60dp"
                         spacing: "10dp"
 
-                        BoxLayout:
-                            orientation: "horizontal"
-                            size_hint_y: None
-                            height: "60dp"
-                            spacing: "10dp"
+                        MDLabel:
+                            text: "My Patients"
+                            font_size: "18sp"
+                            halign: "left"
+                            theme_text_color: "Custom"
+                            text_color: 0, 0, 0, 1
+                            size_hint_x: 0.9
 
-                            MDLabel:
-                                text: "My Patients"
-                                font_size: "18sp"
-                                halign: "left"
-                                theme_text_color: "Custom"
-                                text_color: 0, 0, 0, 1
-                                size_hint_x: 0.9
+                        MDIconButton:
+                            icon: "plus"
+                            theme_text_color: "Custom"
+                            text_color: 0, 0, 0, 1
+                            on_release: root.open_assign_patient_dialog()
 
-                            MDIconButton:
-                                icon: "plus"
-                                theme_text_color: "Custom"
-                                text_color: 0, 0, 0, 1
-                                on_release: root.open_assign_patient_dialog()
+                    MDBoxLayout:
+                        id: patients_list
+                        orientation: "vertical"
+                        adaptive_height: True
+                        spacing: "10dp"
 
-                        ScrollView:
-                            MDBoxLayout:
-                                id: patients_list
-                                orientation: "vertical"
-                                size_hint_y: None
-                                height: self.minimum_height
-                                spacing: "10dp"
 
+                MDSeparator:
+                Widget:
                 MDLabel:
                     text: "\"Bravery is your daily routine. Gratitude is ours. Thank you, Doctor!\""
                     font_name: "assets/Quintessential-Regular.ttf"
@@ -125,3 +124,4 @@
                     size_hint: None, None
                     size: 600, 30
                     pos_hint: {"center_x": 0.5}
+                Widget:

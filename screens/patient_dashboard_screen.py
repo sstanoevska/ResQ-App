@@ -1,3 +1,4 @@
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
 from kivymd.uix.snackbar import MDSnackbar
@@ -88,10 +89,9 @@ class PatientDashboardScreen(MDScreen):
         self.ids.contacts_list.clear_widgets()
 
         for contact in self.contacts:
-            contact_box = BoxLayout(
+            contact_box = MDBoxLayout(
                 orientation="horizontal",
-                size_hint_y=None,
-                height="48dp",
+                adaptive_height=True,
                 spacing="10dp",
                 padding=("5dp", "0dp")
             )
@@ -199,22 +199,32 @@ class PatientDashboardScreen(MDScreen):
                 "alert_type": alert_type,
             })
 
-            msg = response.json().get("message", "Alert sent.")
-            if "messages" in response.json():
-                msg = "Alert sent to all verified contacts."
+            data = response.json()
+            if response.status_code == 200:
+                if alert_type == "doctor":
+                    msg = "Alert sent to your doctor."
+                else:
+                    msg = "Alert sent to all other emergency contacts."
+            else:
+                msg = data.get("message", "Failed to send alert.")
 
-            self.ids.custom_alert_label.text = msg
+            MDSnackbar(MDLabel(
+                text=msg,
+                theme_text_color="Custom", text_color=(1, 1, 1, 1)
+            )).open()
+
             self.ids.custom_alert_box.opacity = 1
             Clock.schedule_once(self.hide_custom_alert, 3)
 
         except Exception as e:
-            self.ids.custom_alert_label.text = f"Error: {str(e)}"
-            self.ids.custom_alert_box.opacity = 1
-            Clock.schedule_once(self.hide_custom_alert, 4)
-
-    def hide_custom_alert(self, dt):
-        self.ids.custom_alert_box.opacity = 0
-        self.ids.custom_alert_label.text = ""
+            MDSnackbar(MDLabel(
+                text=f"Error: {str(e)}",
+                theme_text_color="Custom", text_color=(1, 1, 1, 1)
+            )).open()
+    #         Clock.schedule_once(self.hide_custom_alert, 4)
+    #
+    # def hide_custom_alert(self, dt):
+    #     self.ids.custom_alert_box.opacity = 0
 
     def verify_contact(self, contact_id, code):
         try:
