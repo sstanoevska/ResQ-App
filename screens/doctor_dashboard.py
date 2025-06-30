@@ -34,7 +34,7 @@ class DoctorDashboardScreen(MDScreen):
 
         try:
             response = requests.get("https://resq-backend-iau8.onrender.com/doctor-dashboard", params={
-                "doctor_egn": username,
+                "doctor_egn": 'lidijadan'#username,
             })
 
             data = response.json()

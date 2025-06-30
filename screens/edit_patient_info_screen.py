@@ -9,8 +9,8 @@ class EditPatientInfoScreen(MDScreen):
     def on_pre_enter(self):
         patient = App.get_running_app().selected_patient
         self.ids.name_field.text = patient.get('name', '')
-        self.ids.phone_field.text = patient.get('phone', '')
-        self.ids.address_field.text = patient.get('address', '')
+        self.ids.phone_field.text = str(patient.get('phone', '') or '')
+        self.ids.address_field.text = str(patient.get('address', '') or '')
         self.ids.diagnosis_field.text = patient.get('diagnosis', '')
         self.ids.medications_field.text = patient.get('medications', '')
         self.ids.allergies_field.text = patient.get('allergies', '')
