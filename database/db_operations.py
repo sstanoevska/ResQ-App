@@ -1079,17 +1079,15 @@ def get_patient_history(EGN):
         conn.close()
 
 
-def patient_visit_report(egn):
+def patient_visit_report(egn, up_to_months=4):
     conn = get_db_connection()
     cursor = conn.cursor()
-    months = []
+    # get date and months
     today = datetime.today().replace(day=1)
-    for i in range(5):
-        month = today - relativedelta(months=4 - i)
-        months.append(month.strftime('%Y-%m'))
+    start_date = (today - relativedelta(months=up_to_months - 1)).strftime("%Y-%m-%d")
+    months = [(today - relativedelta(months=i)).strftime('%Y-%m') for i in reversed(range(up_to_months))]
 
-    today = datetime.today().replace(day=1)
-    start_date = (today - relativedelta(months=4)).strftime("%Y-%m-%d")
+
     cursor.execute("""SELECT DATE_FORMAT(edate, '%%Y-%%m') AS month, COUNT(*) AS record_count FROM patient_history
         WHERE EGN = %s AND edate >= %s GROUP BY DATE_FORMAT(edate, '%%Y-%%m') ORDER BY DATE_FORMAT(edate, '%%Y-%%m')
     """, (egn, start_date))
