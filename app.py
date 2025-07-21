@@ -830,15 +830,19 @@ def view_patient_history():
     result = get_patient_history(egn)
     return jsonify({"message": result})
 
-
 @app.route("/patient-visits-report", methods=["GET"])
 def patient_visits():
     data = request.json
     egn = data.get("EGN")
+    up_to_months = data.get("months")
     if not egn:
         return jsonify({"message": "Invalid data."}), 400
-    result = patient_visit_report(egn)
+    if up_to_months:
+        result = patient_visit_report(egn, up_to_months)
+    else:
+        result = patient_visit_report(egn)
     return jsonify({"message": result})
+
 
 
 # @app.route("/patient-symptoms-report", methods=["GET"])
