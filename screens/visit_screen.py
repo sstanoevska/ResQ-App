@@ -53,10 +53,10 @@ class AddVisitScreen(MDScreen):
             width_mult=4,
         )
 
-    def show_priority_menu(self, instance, focus):
+    def show_priority_menu(self):
 
-        if focus and self.priority_menu:
-            self.priority_menu.open()
+        #if focus and self.priority_menu:
+        self.priority_menu.open()
         # else:
             # print("Menu not opened. Focus is False or menu not initialized.")
 
@@ -179,9 +179,8 @@ class AddVisitScreen(MDScreen):
             width_mult=4,
         )
 
-    def show_symptom_menu(self, instance, focus):
-        if focus and self.symptom_menu:
-            self.symptom_menu.open()
+    def show_symptom_menu(self):
+        self.symptom_menu.open()
 
     def set_symptom_text(self, text_item):
         self.ids.symptoms.text = text_item  # Replace with actual ID
