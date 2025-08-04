@@ -1,1 +1,73 @@
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+#:import OneLineListItem kivymd.uix.list.OneLineListItem
+<AddVisitScreen>:
+    name: 'visit_screen'
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+
+        MDTopAppBar:
+            title: "VISIT HISTORY"
+            elevation: 4
+            left_action_items: [["arrow-left", root.go_back]]
+            md_bg_color: 0.27, 0.51, 0.71, 1
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: [30, 30, 30, 30]
+            spacing: 20
+            MDGridLayout:
+                cols: 1
+                spacing: 20
+                padding: "10dp"
+                size_hint_y: None
+                height: self.minimum_height
+
+                MDTextField:
+                    id: date
+                    hint_text: "  Date"
+                    text: ""
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "70dp"
+
+
+                MDTextField:
+                    id: visit_type
+                    hint_text: "  Visit Type"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    readonly: True
+                    icon_right: "arrow-down-drop-circle-outline"
+                    #on_press: root.show_priority_menu(self, self.focus)
+                    on_touch_down:
+                        if self.collide_point(*args[1].pos): root.show_priority_menu()
+
+                MDTextField:
+                    id: symptoms
+                    hint_text: "  Symptoms"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    readonly: True
+                    icon_right: "arrow-down-drop-circle-outline"
+                    on_touch_down:
+                        if self.collide_point(*args[1].pos): root.show_symptom_menu()
+
+                MDTextField:
+                    id: description
+                    hint_text: "  description"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "70dp"
+                    multiline: True
+
+            Widget:
+
+            MDRaisedButton:
+                text: "SAVE VISIT"
+                md_bg_color: 0.27, 0.51, 0.71, 1
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+                pos_hint: {"center_x": 0.5}
+                size_hint: 1, None
+                on_press: root.submit()
 
