@@ -1,7 +1,11 @@
+import threading
+
 from kivy import Config
+from kivy.clock import Clock
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
-
+from kivymd.app import MDApp
+from datetime import datetime, timedelta
 
 Config.set('graphics', 'multisamples', '0')
 Config.set('graphics', 'vsync', '0')
@@ -23,6 +27,8 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.utils import platform
 from os.path import join
+from kivy.storage.jsonstore import JsonStore
+
 
 # 🔹 Avoid circular import by defining path here
 try:
@@ -34,8 +40,8 @@ try:
 except ImportError:
     base_path = os.getcwd()
 
-remember_file_path = join(base_path, "remember_me.txt")
-
+remember_file_path = join(base_path, "user_data.json")
+store = JsonStore(remember_file_path)
 
 class HelpContent(BoxLayout):
     pass
@@ -53,23 +59,32 @@ class LoginScreen(MDScreen):
         self.ids.remember_checkbox.active = False
         self.ids.status_label.text = ""
 
-    def login(self):
-        username = self.ids.username_input.text.strip()
-        password = self.ids.password_input.text.strip()
-        remember = self.ids.remember_checkbox.active
+    def on_pre_enter(self, *args):
+        self.app=MDApp.get_running_app()
 
-        if not username or not password:
-            MDSnackbar(MDLabel(
-                text="Please enter both username and password",
-                theme_text_color="Custom", text_color=(1, 1, 1, 1)
-            )).open()
-            return
+    def login(self):
+        self.username = self.ids.username_input.text.strip()
+        self.password = self.ids.password_input.text.strip()
+        self.remember = self.ids.remember_checkbox.active
+
+        if not self.username or not self.password:
+           MDSnackbar(MDLabel(
+               text="Please enter both username and password",
+               theme_text_color="Custom", text_color=(1, 1, 1, 1)
+           )).open()
+           return
+        self.app.show_loading('Logging...')
+        threading.Thread(target=self.login_process, daemon=True).start()
+
+
+
+    def login_process(self, *args):
 
         try:
             response = requests.post("https://resq-backend-iau8.onrender.com/login", json={
-                "username": username,
-                "password": password,
-                "remember_me": remember
+                "username": self.username,
+                "password": self.password,
+                "remember_me": self.remember
             })
 
             data = response.json()
@@ -78,49 +93,117 @@ class LoginScreen(MDScreen):
 
             if response.status_code == 200:
                 self.ids.status_label.text_color = (0, 1, 0, 1)
-                MDSnackbar(MDLabel(
-                    text=message,
-                    theme_text_color="Custom", text_color=(1, 1, 1, 1)
-                )).open()
+                self.app.show_snackbar(message, (1, 1, 1, 1))
+                # MDSnackbar(MDLabel(
+                #     text=message,
+                #     theme_text_color="Custom", text_color=(1, 1, 1, 1)
+                # )).open()
 
                 token = data.get("token")
-                if remember and token:
-                    self.save_token(token)
+                if self.remember and token:
+                    #self.save_token(token)
+                    store.put('auth', token=token)
+                    three_days_later = datetime.now() + timedelta(days=3)
+                    print(three_days_later)
+                    date_str = three_days_later.strftime("%Y-%m-%d %H:%M:%S")  # convert to string
+                    store.put('expire_session', date=date_str)
 
-                App.get_running_app().logged_in_username = username
-                App.get_running_app().logged_in_egn = data.get("egn")
-                App.get_running_app().logged_in_role = data.get("role")
-
-                self.clear_fields()
+                self.app.logged_in_username = self.username
+                self.app.logged_in_egn = data.get("egn")
+                self.app.logged_in_role = data.get("role")
 
                 role = data.get("role")
                 if role == "patient":
-                    self.manager.current = "patient_dashboard"
+                    #self.manager.current = "patient_dashboard"
+                    Clock.schedule_once(lambda dt: setattr(self.manager, 'current', 'patient_dashboard'))
                 elif role == "doctor":
-                    self.manager.current = "doctor_dashboard"
+                    #self.manager.current = "doctor_dashboard"
+                    Clock.schedule_once(lambda dt: setattr(self.manager, 'current', 'doctor_dashboard'))
             else:
                 self.ids.status_label.text_color = (1, 0, 0, 1)
-                MDSnackbar(MDLabel(
-                    text=message,
-                    theme_text_color="Custom", text_color=(1, 0, 0, 1)
-                )).open()
+                self.app.show_snackbar(message)
+                # MDSnackbar(MDLabel(
+                #     text=message,
+                #     theme_text_color="Custom", text_color=(1, 0, 0, 1)
+                # )).open()
 
         except Exception as e:
             error_msg = f"Error: {str(e)}"
             self.ids.status_label.text = error_msg
             self.ids.status_label.text_color = (1, 0, 0, 1)
-            MDSnackbar(MDLabel(
-                text=error_msg,
-                theme_text_color="Custom", text_color=(1, 0, 0, 1)
-            )).open()
+            # MDSnackbar(MDLabel(
+            #     text=error_msg,
+            #     theme_text_color="Custom", text_color=(1, 0, 0, 1)
+            # )).open()
+            self.app.show_snackbar(error_msg)
 
-    def save_token(self, token):
+        Clock.schedule_once(lambda dt: self.app.hide_loading(), 0)
+
+    def on_leave(self, *args):
+        self.clear_fields()
+
+    def on_enter(self, *args):
+        print('enter')
+        store = JsonStore(remember_file_path)
+        if store.exists('auth'):
+            self.token = store.get('auth')['token']
+            print(self.token)
+            # if os.path.exists(remember_file_path):
+            if self.token is not None:
+                self.app.show_loading('Auto Logging')
+                Clock.schedule_once(self.auto_login, 1.0)
+
+
+    def auto_login(self, *args):
+
+        threading.Thread(target=self.try_auto_login, daemon=True).start()
+        # role = self.try_auto_login()
+
+
+    def try_auto_login(self):
+        store = JsonStore(remember_file_path)
+        expire_date_str = store.get('expire_session')['date']
+        expire_date = datetime.strptime(expire_date_str, "%Y-%m-%d %H:%M:%S")
+        now = datetime.now()
+        # Compare
+        if now > expire_date:
+            error_msg = "Session expired"
+            self.app.show_snackbar(error_msg)
+            store.put('auth', token=None)
+            Clock.schedule_once(lambda dt: self.app.hide_loading(), 0)
+            return
         try:
-            with open(remember_file_path, "w") as file:
-                file.write(token)
-            print("Token saved for auto-login")
+            import certifi
+            response = requests.post(
+                "https://resq-backend-iau8.onrender.com/auto-login",
+                json={"token": self.token},
+                verify=certifi.where()
+            )
+            if response.status_code == 200:
+                data = response.json()
+                self.logged_in_username = data.get("username")
+                self.logged_in_egn = data.get("EGN")
+                self.logged_in_role = data.get("role")
+                self.role = data.get("role")
+                if self.role == "patient":
+                    Clock.schedule_once(lambda dt: setattr(self.manager, "current", "patient_dashboard"))
+                elif self.role == "doctor":
+                    Clock.schedule_once(lambda dt: setattr(self.manager, "current", "doctor_dashboard"))
+                else:
+                    Clock.schedule_once(lambda dt: setattr(self.manager, "current", "login"))
+
         except Exception as e:
-            print(f" Failed to save token: {e}")
+            print("Auto-login failed:", e)
+        Clock.schedule_once(lambda dt: self.app.hide_loading(), 0)
+
+
+    # def save_token(self, token):
+    #     try:
+    #         with open(remember_file_path, "w") as file:
+    #             file.write(token)
+    #         print("Token saved for auto-login")
+    #     except Exception as e:
+    #         print(f" Failed to save token: {e}")
 
     help_dialog = None
 
