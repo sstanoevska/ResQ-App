@@ -57,17 +57,21 @@ class EditEmergencyContactScreen(MDScreen):
                 data = response.json()
                 contacts = data.get("emergency_contacts", [])
                 matched_contact = next((c for c in contacts if c["id"] == contact_id), None)
-
+                print(matched_contact, ' >> 60')
+                print(matched_contact.get("email", ""))
                 if matched_contact:
-                    self.ids.name_field.text = matched_contact.get("name", "")
-                    self.ids.phone_field.text = matched_contact.get("phone", "")
-                    self.ids.email_field.text = matched_contact.get("email", "")
-                    self.ids.contact_type_field.text = matched_contact.get("contact_type", "")
+                    self.ids.name_field.text = str(matched_contact.get("name", ""))
+                    self.ids.phone_field.text = str(matched_contact.get("phone", ""))
+                    self.ids.email_field.text = str(matched_contact.get("email", ""))
+                    self.ids.contact_type_field.text = str(matched_contact.get("contact_type", ""))
+
                 else:
                     MDSnackbar(MDLabel(text="Contact not found.", theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
             else:
                 MDSnackbar(MDLabel(text="Failed to load contact data.", theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
         except Exception as e:
+            print('error 71')
+            print(e)
             MDSnackbar(MDLabel(text=f"Error: {str(e)}", theme_text_color="Custom", text_color=(1, 1, 1, 1))).open()
 
     def clear_message(self, dt):
