@@ -1,3 +1,6 @@
+import os
+
+from kivy.utils import platform
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
@@ -9,6 +12,18 @@ from kivymd.uix.label import MDLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 import requests
+from kivy.storage.jsonstore import JsonStore
+
+try:
+    if platform == "android":
+        from android.storage import app_storage_path
+        base_path = app_storage_path()
+    else:
+        base_path = os.getcwd()
+except ImportError:
+    base_path = os.getcwd()
+
+remember_file_path = os.path.join(base_path, "user_data.json")
 
 
 class PatientDashboardScreen(MDScreen):
@@ -36,7 +51,7 @@ class PatientDashboardScreen(MDScreen):
             self.show_patient_info()
 
             name = self.patient_info.get("name")
-            self.ids.greeting_label.text = f" Welcome back, {name}!" if name else "Hi, User"
+            self.ids.greeting_label.title = f" Welcome back, {name}!" if name else "Hi, User"
 
         except Exception as e:
             MDSnackbar(MDLabel(text=f"Error: {str(e)}",
@@ -152,7 +167,9 @@ class PatientDashboardScreen(MDScreen):
         def edit_contact_wrapper(instance):
             App.get_running_app().selected_contact_id = contact["id"]
             self.manager.current = "update_emergency_contact"
+            print('like 404')
             self.manager.get_screen("update_emergency_contact").load_contact_data(contact["id"])
+            print('406')
         return edit_contact_wrapper
 
     def confirm_delete(self, contact):
@@ -237,6 +254,7 @@ class PatientDashboardScreen(MDScreen):
             if response.status_code == 200:
                 self.reload_contacts()
         except Exception as e:
+
             MDSnackbar(MDLabel(text=f"Error: {str(e)}", theme_text_color="Custom", text_color=(1, 0, 0, 1))).open()
 
     def clear_message(self, dt):
@@ -250,3 +268,5 @@ class PatientDashboardScreen(MDScreen):
 
     def logout(self):
         self.manager.current = "login"
+        store = JsonStore(remember_file_path)
+        store.put('auth', token=None)
