@@ -1,1 +1,182 @@
 
+<PatientHistoryScreen>:
+    name: 'patient_history'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+
+        MDTopAppBar:
+            title: "Patient History"
+            elevation: 4
+            left_action_items: [["arrow-left", root.go_back]]
+            right_action_items: [["numeric", lambda x: root.show_months_menu(x)]]
+            md_bg_color: 0.27, 0.51, 0.71, 1
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: [30, 30, 30, 30]
+            spacing: 20
+
+            MDLabel:
+                id: current_display_date_label
+                text: ""
+                font_size: '16sp'
+                size_hint_y: None
+                height: self.texture_size[1]
+                halign: 'center'
+                valign: 'middle'
+                color: 0.5, 0.5, 0.5, 1
+
+            MDLabel:
+                text: "VISIT HISTORY"
+                font_size: '20sp'
+                size_hint_y: None
+                height: self.texture_size[1]
+                halign: 'left'
+                valign: 'middle'
+                color: 0, 0, 0, 1
+                text_size: self.width, None
+
+            ScrollView:
+                size_hint_y: 0.7 # Adjust as needed
+                #bar_width: dp(5) # Width of the scrollbar
+
+                MDBoxLayout:
+                    id: visit_history_container # This is where dynamic cards will be added
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    spacing: dp(15) # Spacing between cards
+                    padding: dp(5)
+
+
+        # STATISTICS Section
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 0.5
+                padding: dp(10)
+                spacing: dp(10)
+                MDLabel:
+                    text: "STATISTICS"
+                    font_size: '20sp'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    halign: 'center'
+                    color: 0, 0, 0, 1
+                    bold: True
+                ScrollView:
+                    do_scroll_y: False
+                    MDBoxLayout:
+                        adaptive_width: True
+                        width: app.x
+                        MDBoxLayout:
+                            id: bar_box
+                            #adaptive_width: True
+#                        MDBoxLayout:
+#                            #adaptive_width: True
+#                            size_hint_x: 0.5
+#
+#                            orientation: 'vertical'
+#
+#                            spacing: dp(5)
+#                            padding: dp(5)
+#                            MDLabel:
+#                                text: "Common Diagnoses"
+#                                font_size: '14sp'
+#                                size_hint_y: None
+#                                height: self.texture_size[1]
+#                                halign: 'center'
+#                                color: 0.3, 0.3, 0.3, 1
+#                            MDLabel:
+#                                text: "[color=2D7F9B]Anxiety[/color] 40%" # Example colors, use your desired ones
+#                                font_size: '14sp'
+#                                markup: True
+#                                color: 0.3, 0.3, 0.3, 1
+#                                size_hint_y: None
+#                                height: self.texture_size[1]
+#                            MDLabel:
+#                                text: "[color=E55353]Hypertension[/color] 30%"
+#                                font_size: '14sp'
+#                                markup: True
+#                                color: 0.3, 0.3, 0.3, 1
+#                                size_hint_y: None
+#                                height: self.texture_size[1]
+#                            MDLabel:
+#                                text: "[color=F2C94C]Fever[/color] 30%"
+#                                font_size: '14sp'
+#                                markup: True
+#                                color: 0.3, 0.3, 0.3, 1
+#                                size_hint_y: None
+#                                height: self.texture_size[1]
+#                            Widget:
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            id: pie_box
+
+            MDRaisedButton:
+                text: "ADD VISIT"
+                size_hint_y: None
+                height: dp(50)
+                md_bg_color: 0.27, 0.51, 0.71, 1
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+                on_release: app.root.current = 'visit_screen'
+                pos_hint: {"center_x": 0.5}
+                size_hint: 1, None
+
+<MDVisitCard@MDCard>:
+    orientation: 'horizontal' # Changed to horizontal to place sidebar
+    size_hint_y: None
+    height: dp(100) # Fixed height for demo, adjust as needed
+    #padding: dp(5)
+    spacing: dp(10)
+    radius: [dp(10),]
+    md_bg_color: root.bg_color
+
+    visit_date: ''
+    visit_details: ''
+    #sidebar_color: [0.5, 0.5, 0.5, 1] # Default sidebar color (grey)
+
+    # Left-side colored bar
+    MDCard:
+        radius: [dp(10),dp(0),dp(0),dp(10)]
+        size_hint_x: None
+        width: dp(20) # Width of the colored bar
+        md_bg_color: root.sidebar_color # Use the custom color property
+
+
+    # Content Area
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 5, 10, 5, 5
+        spacing: dp(5)
+
+        MDLabel:
+            text: root.visit_date
+            font_size: '16sp'
+            bold: True
+            color: 0, 0, 0, 1
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+        MDLabel:
+            text: root.visit_status
+            font_size: '14sp'
+            color: 0.3, 0.3, 0.3, 1
+            text_size: self.width, None
+            valign: 'top'
+
+        MDLabel:
+            text: root.visit_disease
+            font_size: '14sp'
+            color: 0.3, 0.3, 0.3, 1
+            text_size: self.width, None
+            valign: 'top'
+
+        MDLabel:
+            text: " ".join(root.visit_details.splitlines())[:60]
+            font_size: '14sp'
+            color: 0.3, 0.3, 0.3, 1
+            text_size: self.width, None
+            valign: 'top'
+
+
