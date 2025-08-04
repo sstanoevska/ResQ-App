@@ -1,1 +1,29 @@
+<SplashScreen>:
+    name: 'splash'
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(20)
+        padding: dp(24)
+        md_bg_color: 0.501, 0, 0.125, 1
+        Label:
+            text: "ResQ Login"
+            halign: "center"
+            bold: True
+            font_size: "40sp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.85}
+
+        MDLabel:
+            id: status_label
+            text: root.status_text
+            halign: 'center'
+            theme_text_color: "Custom"
+            text_color: (1, 0, 0, 1) if "No" in root.status_text else (0, 1, 0, 1)
+            font_style: "H6"
+
+        MDRaisedButton:
+            text: "Retry"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.retry_check()
+            opacity: 1 if root.show_retry else 0
+            disabled: not root.show_retry
 
