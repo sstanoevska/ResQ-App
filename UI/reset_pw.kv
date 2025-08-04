@@ -1,3 +1,10 @@
+<CustomTextField@MDTextField>
+    line_color_focus: "white"
+    hint_text_color_focus: "white"
+    text_color_focus: "white"
+    line_color_normal: "grey"
+    hint_text_color_normal: "grey"
+    text_color_normal: "grey"
 <ResetPasswordScreen>:
     name: "reset_pw"
 
@@ -19,20 +26,20 @@
                 size_hint_y: None
                 height: self.minimum_height
 
-                MDTextField:
+                CustomTextField:
                     id: phone_input
                     hint_text: "Phone Number"
                     readonly: True
                     size_hint_y: None
                     height: "50dp"
 
-                MDTextField:
+                CustomTextField:
                     id: code_input
                     hint_text: "Enter Code"
                     size_hint_y: None
                     height: "50dp"
 
-                MDTextField:
+                CustomTextField:
                     id: new_password_input
                     hint_text: "New Password"
                     password: True
