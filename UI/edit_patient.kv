@@ -64,6 +64,13 @@
                         height: "70dp"
                     Widget:
                     MDRaisedButton:
+                        text: "Patient History"
+                        on_release: app.root.current = 'patient_history'
+                        size_hint: 1, None
+                        #size: "150dp", "45dp"
+                        md_bg_color: 0.27, 0.51, 0.71, 1
+                        pos_hint: {"center_x": 0.5}
+                    MDRaisedButton:
                         text: "Save"
                         on_release: root.save_changes()
                         size_hint: 1, None
