@@ -1,72 +1,67 @@
 <EditEmergencyContactScreen>:
     name: "update_emergency_contact"
-    BoxLayout:
+    MDBoxLayout:
         orientation: 'vertical'
-        padding: [30, 30, 30, 30]
         spacing: 20
-        canvas.before:
-            Color:
-                rgba: 1, 1, 1, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
         MDTopAppBar:
             title: "Edit Contact"
             elevation: 4
             left_action_items: [["arrow-left", root.go_back]]
             md_bg_color: 0.27, 0.51, 0.71, 1
-
-        ScrollView:
-            MDGridLayout:
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-                spacing: 20
-                padding: "10dp"
-
-                MDTextField:
-                    id: name_field
-                    hint_text: "Enter contact's new name"
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: [30, 30, 30, 30]
+            spacing: 20
+            ScrollView:
+                MDGridLayout:
+                    cols: 1
                     size_hint_y: None
-                    height: "70dp"
+                    height: self.minimum_height
+                    spacing: 20
+                    padding: "10dp"
 
-                MDTextField:
-                    id: phone_field
-                    hint_text: "Enter phone number"
-                    size_hint_y: None
-                    height: "70dp"
-                    input_filter: "int"
+                    MDTextField:
+                        id: name_field
+                        hint_text: "Enter contact's new name"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDTextField:
-                    id: email_field
-                    hint_text: "Enter email"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: phone_field
+                        hint_text: "Enter phone number"
+                        size_hint_y: None
+                        height: "70dp"
+                        input_filter: "int"
 
-                MDTextField:
-                    id: contact_type_field
-                    hint_text: "Enter contact type (doctor or other)"
-                    size_hint_y: None
-                    height: "70dp"
+                    MDTextField:
+                        id: email_field
+                        hint_text: "Enter email"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDRaisedButton:
-                    text: "Save"
-                    size_hint: None, None
-                    size: "200dp", "50dp"
-                    pos_hint: {"center_x": 0.5}
-                    md_bg_color: 0.27, 0.51, 0.71, 1
-                    on_release: root.update_contact()
+                    MDTextField:
+                        id: contact_type_field
+                        hint_text: "Enter contact type (doctor or other)"
+                        size_hint_y: None
+                        height: "70dp"
 
-                MDLabel:
-                    id: message_label
-                    text: ""
-                    markup: True
-                    theme_text_color: "Custom"
-                    text_color: 0, 0.5, 0, 1
-                    halign: "center"
-                    valign: "middle"
-                    size_hint_y: None
-                    font_size: "16sp"
-                    text_size: self.width, None
-                    height: "30dp"
+                    MDRaisedButton:
+                        text: "Save"
+                        size_hint: 1, None
+                        size: "200dp", "50dp"
+                        pos_hint: {"center_x": 0.5}
+                        md_bg_color: 0.27, 0.51, 0.71, 1
+                        on_release: root.update_contact()
+
+                    MDLabel:
+                        id: message_label
+                        text: ""
+                        markup: True
+                        theme_text_color: "Custom"
+                        text_color: 0, 0.5, 0, 1
+                        halign: "center"
+                        valign: "middle"
+                        size_hint_y: None
+                        font_size: "16sp"
+                        text_size: self.width, None
+                        height: "30dp"
