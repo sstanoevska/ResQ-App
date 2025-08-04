@@ -9,6 +9,7 @@ import bcrypt
 from cryptography.fernet import Fernet
 from dateutil.relativedelta import relativedelta
 
+
 from help_sms import send_sms
 from normalize_phone import normalize_phone
 from .db_test import get_db_connection
@@ -17,18 +18,8 @@ from dotenv import load_dotenv
 conn = get_db_connection()
 cursor = conn.cursor()
 
-
-# Create history table query
-# create_table_query = """
-# select * from app_users;
-# # """
-#
-# cursor.execute(create_table_query)
-# print(cursor.fetchall())
-
-
 load_dotenv()
-fernet = os.getenv("SECRET_KEY"))
+fernet = Fernet('V87sa7l1fbq2l0cf-iC5JHAPEDnigqCBXUkjGSzV4qo=')  # os.getenv("SECRET_KEY"))
 
 pw_regex = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&*!]).{8,}$"
 
@@ -190,7 +181,7 @@ def assign_patient(doctor_egn, patient_egn):
         conn.close()
         return "Patient not found"
 
-    # ✅ Insert relationship
+    
     try:
         cursor.execute("INSERT INTO doctor_patient(doctor_egn, patient_egn) VALUES (%s, %s)",
                        (hashed_doctor, hashed_patient))
@@ -607,7 +598,6 @@ def patient_visit_report(egn, up_to_months=4):
     cursor.close()
     conn.close()
     return final_results
-
 
 def patient_symptoms_report(egn):
     conn = get_db_connection()
