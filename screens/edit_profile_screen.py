@@ -79,3 +79,9 @@ class EditProfileScreen(MDScreen):
 
     def go_back(self, *args):
         self.refresh_dashboard()
+
+    def on_leave(self, *args):
+        self.ids.name_field.text = ''
+        self.ids.username_field.text = ''
+        self.ids.phone_field.text = ''
+        self.ids.address_field.text = ''
