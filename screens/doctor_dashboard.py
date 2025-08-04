@@ -1,6 +1,8 @@
 import json
 import os
 
+from kivy.storage.jsonstore import JsonStore
+from kivy.utils import platform
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IRightBodyTouch,TwoLineAvatarIconListItem
 from kivymd.uix.screen import MDScreen
@@ -14,6 +16,22 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 import requests
+
+
+
+try:
+    if platform == "android":
+        from android.storage import app_storage_path
+        base_path = app_storage_path()
+    else:
+        base_path = os.getcwd()
+except ImportError:
+    base_path = os.getcwd()
+
+remember_file_path = os.path.join(base_path, "user_data.json")
+
+
+
 
 
 class ListContainer(IRightBodyTouch, MDBoxLayout):
@@ -46,9 +64,8 @@ class DoctorDashboardScreen(MDScreen):
             self.doctor_info = data.get("doctor_info", {})
             self.patients = data.get("patients", [])
             print(f"✅ Loaded {len(self.patients)} patients from backend")
-
             name = self.doctor_info.get("name")
-            self.ids.greeting_label.text = f" Welcome back, Dr. {name}!" if name else "Hi, Doctor"
+            self.ids.greeting_label.title = f" Welcome back, Dr. {name}!" if name else "Hi, Doctor"
 
             self.show_doctor_info()
             self.show_patients()
@@ -107,47 +124,6 @@ class DoctorDashboardScreen(MDScreen):
 
             except Exception as e:
                 print(f"Error displaying patient: {e}")
-        # self.ids.patients_list.clear_widgets()
-        # print("Refreshing patient list")
-        #
-        # for patient in self.patients:
-        #     try:
-        #         name = patient.get("name", "Unknown")
-        #         phone = patient.get("phone", "N/A")
-        #
-        #         patient_box = BoxLayout(
-        #             orientation="horizontal", size_hint_y=None, height="48dp", padding="5dp", spacing="10dp"
-        #         )
-        #
-        #         patient_box.add_widget(MDIconButton(
-        #             icon="account",
-        #             theme_text_color="Custom",
-        #             text_color=(0, 0, 0, 1)
-        #         ))
-        #
-        #         patient_box.add_widget(MDLabel(
-        #             text=f"{name} - {phone}",
-        #             shorten=True,
-        #             max_lines=1,
-        #             theme_text_color="Custom",
-        #             text_color=(0, 0, 0, 1),
-        #             size_hint_x=0.6,
-        #             halign="left",
-        #             valign="middle"
-        #         ))
-        #
-        #         pencil_icon = MDIconButton(icon="pencil", theme_text_color="Custom", text_color=(0, 0, 0, 1))
-        #         pencil_icon.bind(on_release=lambda x, p=patient: self.open_edit_patient_screen(p))
-        #         patient_box.add_widget(pencil_icon)
-        #
-        #         trash_icon = MDIconButton(icon="trash-can", theme_text_color="Custom", text_color=(0, 0, 0, 1))
-        #         trash_icon.bind(on_release=lambda x, e=patient.get("EGN"): self.confirm_delete_patient(e))
-        #         patient_box.add_widget(trash_icon)
-        #
-        #         self.ids.patients_list.add_widget(patient_box)
-        #
-        #     except Exception as e:
-        #         print(f"Error displaying patient: {e}")
 
     def open_assign_patient_dialog(self):
         self.patient_input = MDTextField(
@@ -247,3 +223,5 @@ class DoctorDashboardScreen(MDScreen):
 
     def logout(self):
         self.manager.current = "login"
+        store = JsonStore(remember_file_path)
+        store.put('auth', token=None)
