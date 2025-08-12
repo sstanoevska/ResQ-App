@@ -266,11 +266,22 @@ def view_patient_history():
     return jsonify({"message": result})
 @app.route("/patient-visits-report", methods=["GET"])
 def patient_visits():
-    data = request.json
-    egn = data.get("EGN")
+    egn = request.args.get("EGN")
+    months = request.args.get("months", type=int)
+
+    if not egn and request.is_json:
+        body = request.get_json(silent=True) or {}
+        egn = body.get("EGN")
+        months = months or body.get("months")
+
     if not egn:
         return jsonify({"message": "Invalid data."}), 400
-    result = patient_visit_report(egn)
+
+    try:
+        result = patient_visit_report(egn, months)
+    except TypeError:
+        result = patient_visit_report(egn)
+
     return jsonify({"message": result})
 
 # @app.route("/patient-symptoms-report", methods=["GET"])
@@ -602,3 +613,4 @@ def auto_login():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8050))
     app.run(host="0.0.0.0", port=port)
+
