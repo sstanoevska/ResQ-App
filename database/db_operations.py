@@ -29,7 +29,7 @@ cursor = conn.cursor()
 
 
 load_dotenv()
-fernet = Fernet('V87sa7l1fbq2l0cf-iC5JHAPEDnigqCBXUkjGSzV4qo=')  # os.getenv("SECRET_KEY"))
+fernet = Fernet(os.getenv("SECRET_KEY"))
 
 pw_regex = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&*!]).{8,}$"
 
@@ -642,3 +642,4 @@ def patient_symptoms_report(egn):
         cursor.close()
         conn.close()
         return result
+
