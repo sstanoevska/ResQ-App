@@ -9,7 +9,6 @@ import bcrypt
 from cryptography.fernet import Fernet
 from dateutil.relativedelta import relativedelta
 
-
 from help_sms import send_sms
 from normalize_phone import normalize_phone
 from .db_test import get_db_connection
@@ -17,6 +16,17 @@ from dotenv import load_dotenv
 
 conn = get_db_connection()
 cursor = conn.cursor()
+
+
+# Create history table query
+# create_table_query = """
+# Select * from patient_history;
+# # """
+#
+# cursor.execute(create_table_query)
+# conn.commit()
+# print(cursor.fetchall())
+
 
 load_dotenv()
 fernet = Fernet('V87sa7l1fbq2l0cf-iC5JHAPEDnigqCBXUkjGSzV4qo=')  # os.getenv("SECRET_KEY"))
@@ -181,7 +191,7 @@ def assign_patient(doctor_egn, patient_egn):
         conn.close()
         return "Patient not found"
 
-    
+    # ✅ Insert relationship
     try:
         cursor.execute("INSERT INTO doctor_patient(doctor_egn, patient_egn) VALUES (%s, %s)",
                        (hashed_doctor, hashed_patient))
@@ -519,6 +529,8 @@ def delete_doctor_patient(doctor_egn, patient_egn):
 
 
 def add_patient_history(EGN, edate, visit_type, symptom, description):
+    hashed = sha256_hash(EGN)
+    encrypted = encrypt_egn(EGN)
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
@@ -527,7 +539,7 @@ def add_patient_history(EGN, edate, visit_type, symptom, description):
         cursor.execute("""
         INSERT INTO patient_history (EGN, edate, visit_type, symptom, description)
         VALUES (%s, %s, %s, %s, %s)
-        """, (EGN, edate, visit_type, symptom, description))
+        """, (hashed, edate, visit_type, symptom, description))
         conn.commit()
         return "Record inserted successfully."
     except Exception as e:
@@ -539,12 +551,14 @@ def add_patient_history(EGN, edate, visit_type, symptom, description):
 
 
 def get_patient_history(EGN):
+    hashed = sha256_hash(EGN)
+    encrypted = encrypt_egn(EGN)
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
         cursor.execute("""
         Select * from patient_history where EGN=%s order by edate;
-        """, (EGN,))
+        """, (hashed,))
         result = cursor.fetchall()
         if result:
             return {'message': "Records Found", 'data': result}
@@ -558,6 +572,8 @@ def get_patient_history(EGN):
 
 
 def patient_visit_report(egn, up_to_months=4):
+    hashed = sha256_hash(egn)
+    #encrypted = encrypt_egn(egn)
     conn = get_db_connection()
     cursor = conn.cursor()
     # get date and months
@@ -568,7 +584,7 @@ def patient_visit_report(egn, up_to_months=4):
 
     cursor.execute("""SELECT DATE_FORMAT(edate, '%%Y-%%m') AS month, COUNT(*) AS record_count FROM patient_history
         WHERE EGN = %s AND edate >= %s GROUP BY DATE_FORMAT(edate, '%%Y-%%m') ORDER BY DATE_FORMAT(edate, '%%Y-%%m')
-    """, (egn, start_date))
+    """, (hashed, start_date))
     results = cursor.fetchall()
     db_results = {row["month"]: row["record_count"] for row in results}
 
@@ -578,7 +594,7 @@ def patient_visit_report(egn, up_to_months=4):
     counts = [item[1] for item in temp_results]
     # symptoms report query
     total_query = "SELECT COUNT(*) FROM patient_history WHERE EGN = %s"
-    cursor.execute(total_query, (egn,))
+    cursor.execute(total_query, (hashed,))
     total_count = cursor.fetchone()['COUNT(*)']
     if total_count == 0:
         cursor.close()
@@ -587,7 +603,7 @@ def patient_visit_report(egn, up_to_months=4):
         percent = []
     else:
         cursor.execute("""SELECT symptom, COUNT(*) AS count FROM patient_history WHERE EGN = %s GROUP BY symptom
-                ORDER BY count DESC;""", (egn,))
+                ORDER BY count DESC;""", (hashed,))
         rows = cursor.fetchall()
         symptom_percentages = [(row['symptom'], round((row['count'] / total_count) * 100, 2)) for row in rows]
 
@@ -599,12 +615,15 @@ def patient_visit_report(egn, up_to_months=4):
     conn.close()
     return final_results
 
+
 def patient_symptoms_report(egn):
+    hashed = sha256_hash(egn)
+    #encrypted = encrypt_egn(egn)
     conn = get_db_connection()
     cursor = conn.cursor()
     # Step 1: Get total symptom count for the given EGN
     total_query = "SELECT COUNT(*) FROM patient_history WHERE EGN = %s"
-    cursor.execute(total_query, (egn,))
+    cursor.execute(total_query, (hashed,))
     total_count = cursor.fetchone()['COUNT(*)']
     if total_count == 0:
         cursor.close()
@@ -612,7 +631,7 @@ def patient_symptoms_report(egn):
         return {"data": None}
     else:
         cursor.execute("""SELECT symptom, COUNT(*) AS count FROM patient_history WHERE EGN = %s GROUP BY symptom
-            ORDER BY count DESC;""", (egn,))
+            ORDER BY count DESC;""", (hashed,))
         rows = cursor.fetchall()
         symptom_percentages = [(row['symptom'], round((row['count'] / total_count) * 100, 2)) for row in rows]
 
