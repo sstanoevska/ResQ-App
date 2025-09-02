@@ -163,4 +163,3 @@ class ResQApp(MDApp):
 
 if __name__ == '__main__':
     ResQApp().run()
-
