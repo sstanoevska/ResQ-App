@@ -103,7 +103,7 @@ class LoginScreen(MDScreen):
                 if self.remember and token:
                     #self.save_token(token)
                     store.put('auth', token=token)
-                    three_days_later = datetime.now() + timedelta(days=3)
+                    three_days_later = datetime.now() + timedelta(days=30)
                     print(three_days_later)
                     date_str = three_days_later.strftime("%Y-%m-%d %H:%M:%S")  # convert to string
                     store.put('expire_session', date=date_str)
@@ -223,13 +223,17 @@ class LoginScreen(MDScreen):
                 "2. Use the '+' button to add emergency contacts.\n"
                 "3. Edit your profile to update medical info.\n"
                 "4. Use the red button to alert your doctor, or the blue button to alert other contacts.\n"
-                "Messages are sent via SMS under the name InfoSys.\n\n"
+                "5. On first use, please send a test SOS message to your contacts. This allows you to verify the functionality and the number you have entered.\n\n"
+
+                "All alerts will be sent from +1 380-324-0238. We recommend that your contacts save this number as important.\n\n"
+
                 "For Doctors:\n"
-                "You can assign patients via EGN, edit their info, or remove them from your care list.\n\n"
+                "You can assign patients via EGN, edit their info, record and review their visits or remove them from your care list.\n\n"
+
                 "Data Policy:\n"
                 "If you wish to delete your profile, please contact us at support@resqapp.com.\n"
                 "Your data will be permanently removed from our system within 1–3 business days.\n\n"
-                "By using this app, you consent to the use of your data solely for purposes essential to the functionality of ResQ."
+                "Need help? Our 24/7 assistance phone is available at: +359 89 701 3915"
             )
 
             content = MDLabel(
